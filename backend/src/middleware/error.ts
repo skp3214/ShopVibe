@@ -5,6 +5,9 @@ import { ControllerType } from "../types/types.js";
 export const errorMiddleWare=(err:ErrorHandler,req:Request,res:Response,next:NextFunction)=>{
     err.statusCode=err.statusCode||500;
     err.message=err.message||"Internal Server Error";
+    if(err.name==="CastError"){
+        err.message="Invalid Id";
+    }
     res.status(err.statusCode).json({
         status:false,
         message:err.message

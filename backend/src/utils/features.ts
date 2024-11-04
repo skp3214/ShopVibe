@@ -1,10 +1,10 @@
 import mongoose from "mongoose"
-import { InvalidatesCacheType } from "../types/types.js";
+import { InvalidatesCacheType, OrderItemType } from "../types/types.js";
 import { Product } from "../models/product.js";
 import { myCache } from "../app.js";
 
-export const connectDB = () => {
-    mongoose.connect("mongodb+srv://skprajapati3214:Sachin3214@backend-cluster.qfpxr0l.mongodb.net/?retryWrites=true&w=majority", {
+export const connectDB = (uri:string) => {
+    mongoose.connect(uri, {
         dbName: "ShopVibe",
     }).then(() => {
         console.log("Database Connected");
@@ -29,5 +29,17 @@ export const invalidatesCache = async({
             productKeys.push(`product-${product._id}`);
         });
         myCache.del(productKeys);
+    }
+}
+
+export const reduceStock=async(orderItems:OrderItemType[])=>{
+    for(let i=0;i<orderItems.length;i++){
+        const order=orderItems[i];
+        const product=await Product.findById(order.productId);
+        if(!product){
+            throw new Error("Product not found");
+        }
+        product.stock-=order.quantity;
+        await product.save();
     }
 }

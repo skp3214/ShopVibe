@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 import { myCache } from "../app.js";
 import { Product } from "../models/product.js";
 import { InvalidatesCacheType, OrderItemType } from "../types/types.js";
@@ -91,4 +91,23 @@ export const getInventories = async ({
         });
     });
     return categoryCount;
+}
+interface MyDocument  extends Document{
+    createdAt:Date;
+}
+type FuncProps={
+    length:number;
+    docArr:MyDocument[];
+}
+export const getChartData=({length,docArr}:FuncProps)=>{
+    const data:number[] = new Array(length).fill(0);
+    const today = new Date();
+    docArr.forEach((i) => {
+        const creationDate = new Date(i.createdAt);
+        const monthDiff = (today.getMonth() - creationDate.getMonth() + 12) % 12;
+        if (monthDiff < length) {
+            data[length - monthDiff - 1] += 1;
+        }
+    });
+    return data;
 }

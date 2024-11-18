@@ -67,7 +67,7 @@ export const CalculatePercentage = (
     if (lastMonth === 0) {
         return 100;
     }
-    const percentage = ((currentMonth - lastMonth) / lastMonth) * 100;
+    const percentage = ((currentMonth) / lastMonth) * 100;
     return Number(percentage.toFixed(2));
 }
 

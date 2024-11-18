@@ -3,7 +3,7 @@ import { TryCatch } from "../middleware/error.js";
 import { Order } from "../models/order.js";
 import { Product } from "../models/product.js";
 import { User } from "../models/user.js";
-import { CalculatePercentage, getInventories } from "../utils/features.js";
+import { CalculatePercentage, getChartData, getInventories } from "../utils/features.js";
 
 export const getDashboardStats = TryCatch(async (
     req,
@@ -281,6 +281,60 @@ export const getBarCharts = TryCatch(async (
     if (myCache.has("barCharts")) {
         charts = JSON.parse(myCache.get("barCharts") as string);
     }
+    else{
+        const today = new Date();
+        const sixMonthsAgo = new Date();
+        sixMonthsAgo.setMonth(today.getMonth() - 6);
+
+        const twelveMonthsAgo = new Date();
+        twelveMonthsAgo.setMonth(today.getMonth() - 12);
+
+        const lastSixMonthsProductsPromise = Product.find({
+            createdAt: {
+                $gte: sixMonthsAgo,
+                $lte: today,
+            }
+        }).select("createdAt");
+
+        const lastSixMonthUsersPromise = User.find({
+            createdAt: {
+                $gte: sixMonthsAgo,
+                $lte: today,
+            }
+        }).select("createdAt");
+
+        const lastSixMonthsOrdersPromise = Order.find({
+            createdAt: {
+                $gte: twelveMonthsAgo,
+                $lte: today,
+            }
+        }).select("createdAt");
+
+        const [
+            lastSixMonthsProducts,
+            lastSixMonthUsers,
+            lastSixMonthsOrders
+        ]=await Promise.all([
+            lastSixMonthsProductsPromise,
+            lastSixMonthUsersPromise,
+            lastSixMonthsOrdersPromise
+        ])
+
+        const productCount=getChartData({length:6,docArr:lastSixMonthsProducts});
+        const userCount=getChartData({length:6,docArr:lastSixMonthUsers});
+        const orderCount=getChartData({length:12,docArr:lastSixMonthsOrders});
+
+        charts={
+            products:productCount,
+            users:userCount,
+            orders:orderCount
+        }
+        myCache.set("barCharts", JSON.stringify(charts));
+    }
+    return res.status(200).json({
+        success: true,
+        charts
+    });
 });
 export const getLineCharts = TryCatch(async (
     req,

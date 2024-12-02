@@ -5,7 +5,7 @@ import { FcGoogle } from "react-icons/fc"
 import { auth } from "../firebase"
 import { useLoginMutation } from "../redux/api/UserAPI"
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query"
-import { MessageResponse } from "../types/apitypes"
+import { MessageResponse } from "../types/api.types"
 
 const Login = () => {
     const [gender, setGender] = useState("")

@@ -1,16 +1,35 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import AdminSidebar from "../../../components/admin/AdminSidebar";
+import { useSelector } from "react-redux";
+import { UserReducerIntialState } from "../../../types/reducer.types";
+import { useDeleteProductMutation, useProductDetailsQuery, useUpdateProductMutation } from "../../../redux/api/ProductAPI";
+import { useNavigate, useParams } from "react-router-dom";
+import { server } from "../../../redux/store";
+import { SkeletonLoader } from "../../../components/loader";
+import { responseToast } from "../../../utils/features";
 
 const img =
   "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvZXN8ZW58MHx8MHx8&w=1000&q=804";
 
 const Productmanagement = () => {
-  const [price, setPrice] = useState<number>(2000);
-  const [stock, setStock] = useState<number>(10);
-  const [name, setName] = useState<string>("Puma Shoes");
-  const [photo, setPhoto] = useState<string>(img);
-  const [category, setCategory] = useState<string>("footwear");
+
+  const { user } = useSelector(
+    (state: { userReducer: UserReducerIntialState }) => state.userReducer
+  )
+
+  const params = useParams()
+  const navigate = useNavigate()
+  const { data, isLoading } = useProductDetailsQuery(params.id!);
+
+  const { _id, name, price, stock, category, photo } = data?.product || {
+    _id: "",
+    name: "",
+    price: 0,
+    stock: 0,
+    category: "",
+    photo: ""
+  };
 
   const [priceUpdate, setPriceUpdate] = useState<number>(price);
   const [stockUpdate, setStockUpdate] = useState<number>(stock);
@@ -18,6 +37,9 @@ const Productmanagement = () => {
   const [categoryUpdate, setCategoryUpdate] = useState<string>(category);
   const [photoUpdate, setPhotoUpdate] = useState<string>(photo);
   const [photoFile, setPhotoFile] = useState<File>();
+
+  const [updateProduct] = useUpdateProductMutation()
+  const [deleteProduct] = useDeleteProductMutation()
 
   const changeImageHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const file: File | undefined = e.target.files?.[0];
@@ -35,82 +57,124 @@ const Productmanagement = () => {
     }
   };
 
-  const submitHandler = (e: FormEvent<HTMLFormElement>): void => {
+  const submitHandler = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    setName(nameUpdate);
-    setPrice(priceUpdate);
-    setStock(stockUpdate);
-    setPhoto(photoUpdate);
+    const formData = new FormData();
+    if (!nameUpdate || !priceUpdate || !stockUpdate || !categoryUpdate) {
+      return;
+    }
+    if (nameUpdate) {
+      formData.set("name", nameUpdate);
+    }
+    if (priceUpdate) {
+      formData.set("price", priceUpdate.toString());
+    }
+    if (stockUpdate) {
+      formData.set("stock", stockUpdate.toString());
+    }
+    if (categoryUpdate) {
+      formData.set("category", categoryUpdate);
+    }
+    if (photoFile) {
+      formData.set("photo", photoFile);
+    }
+
+    const res = await updateProduct({ userId: user?._id as string, productId: _id as string, formData })
+    responseToast(res, navigate, "/admin/product")
   };
 
+  useEffect(() => {
+    if (data) {
+      setNameUpdate(data.product.name)
+      setPriceUpdate(data.product.price)
+      setStockUpdate(data.product.stock)
+      setCategoryUpdate(data.product.category)
+      setPhotoUpdate(`${server}/${data.product.photo}`)
+    }
+
+    return () => {
+    }
+  }, [data])
+
+  const deleteHandler = async () => {
+    const res = await deleteProduct({ userId: user?._id as string, productId: _id as string })
+    responseToast(res, navigate, "/admin/product")
+  }
   return (
     <div className="admin-container">
       <AdminSidebar />
       <main className="product-management">
-        <section>
-          <strong>ID - fsdfsfsggfgdf</strong>
-          <img src={photo} alt="Product" />
-          <p>{name}</p>
-          {stock > 0 ? (
-            <span className="green">{stock} Available</span>
-          ) : (
-            <span className="red"> Not Available</span>
-          )}
-          <h3>₹{price}</h3>
-        </section>
-        <article>
-          <button className="product-delete-btn">
-            <FaTrash />
-          </button>
-          <form onSubmit={submitHandler}>
-            <h2>Manage</h2>
-            <div>
-              <label>Name</label>
-              <input
-                type="text"
-                placeholder="Name"
-                value={nameUpdate}
-                onChange={(e) => setNameUpdate(e.target.value)}
-              />
-            </div>
-            <div>
-              <label>Price</label>
-              <input
-                type="number"
-                placeholder="Price"
-                value={priceUpdate}
-                onChange={(e) => setPriceUpdate(Number(e.target.value))}
-              />
-            </div>
-            <div>
-              <label>Stock</label>
-              <input
-                type="number"
-                placeholder="Stock"
-                value={stockUpdate}
-                onChange={(e) => setStockUpdate(Number(e.target.value))}
-              />
-            </div>
+        {
+          isLoading ? SkeletonLoader({ width: "" }) : (
+            <>
+              <section>
+                <strong>ID -{_id} </strong>
+                <img src={`${server}/${photo}`} alt="Product" />
+                <p>{name}</p>
+                {stock > 0 ? (
+                  <span className="green">{stock} Available</span>
+                ) : (
+                  <span className="red"> Not Available</span>
+                )}
+                <h3>₹{price}</h3>
+              </section>
+              <article>
+                <button className="product-delete-btn" onClick={deleteHandler}>
+                  <FaTrash />
+                </button>
+                <form onSubmit={submitHandler}>
+                  <h2>Manage</h2>
+                  <div>
+                    <label>Name</label>
+                    <input
+                      type="text"
+                      placeholder="Name"
+                      value={nameUpdate}
+                      onChange={(e) => setNameUpdate(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label>Price</label>
+                    <input
+                      type="number"
+                      placeholder="Price"
+                      value={priceUpdate}
+                      onChange={(e) => setPriceUpdate(Number(e.target.value))}
+                    />
+                  </div>
+                  <div>
+                    <label>Stock</label>
+                    <input
+                      type="number"
+                      placeholder="Stock"
+                      value={stockUpdate}
+                      onChange={(e) => setStockUpdate(Number(e.target.value))}
+                    />
+                  </div>
 
-            <div>
-              <label>Category</label>
-              <input
-                type="text"
-                placeholder="eg. laptop, camera etc"
-                value={categoryUpdate}
-                onChange={(e) => setCategoryUpdate(e.target.value)}
-              />
-            </div>
+                  <div>
+                    <label>Category</label>
+                    <input
+                      type="text"
+                      placeholder="eg. laptop, camera etc"
+                      value={categoryUpdate}
+                      onChange={(e) => setCategoryUpdate(e.target.value)}
+                    />
+                  </div>
 
-            <div>
-              <label>Photo</label>
-              <input type="file" onChange={changeImageHandler} />
-            </div>
+                  <div>
+                    <label>Photo</label>
+                    <input type="file" onChange={changeImageHandler} />
+                  </div>
 
-            {photoUpdate && <img src={photoUpdate} alt="New Image" />}
-            <button type="submit">Update</button>
-          </form>
-        </article>
+                  {photoUpdate && <img src={photoUpdate} alt="New Image" />}
+                  <button type="submit">Update</button>
+                </form>
+              </article>
+            </>
+          )
+
+        }
       </main>
     </div>
   );

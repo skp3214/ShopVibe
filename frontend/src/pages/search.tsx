@@ -1,16 +1,32 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import ProductCard from "../components/product-card";
+import { useCategoriesQuery, useSearchedProductsQuery } from "../redux/api/ProductAPI";
+import { CustomError } from "../types/api.types";
+import toast from "react-hot-toast";
+import { SkeletonLoader } from "../components/loader";
 
 const Search = () => {
+  const { data: categoriesResponse, isLoading: loadingCategories, isError, error } = useCategoriesQuery("");
+  useEffect(() => {
+    if (isError) {
+      toast.error((error as CustomError)?.data?.message || "An error occurred");
+    }
+  }, [isError, error]);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("100000");
   const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
 
+  const { isLoading: productLoading, data: searchedData,
+    isError: productIsError, error: productError
+  } = useSearchedProductsQuery({ search, sort, price: Number(maxPrice), category, page });
   const addToCartHandler = () => { };
-  const isNextPage = page>1;
-  const isPrevPage = page<4;
+  const isPrevPage = page > 1;
+  const isNextPage = searchedData && page < searchedData.totalPages;
+  if (productIsError) {
+    toast.error((productError as CustomError)?.data?.message || "An error occurred");
+  }
 
   return (
     <div className="product-search-page">
@@ -37,24 +53,38 @@ const Search = () => {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
-            <option value="all">All</option>
-            <option value="camera">Camera</option>
-            <option value="game">Game</option>
-            <option value="laptop">Laptop</option>
+            <option value="">ALL</option>
+            {
+              !loadingCategories && categoriesResponse?.categories.map((category) => (
+                <option key={category} value={category}>{category.toUpperCase()}</option>
+              ))
+            }
           </select>
         </div>
       </aside>
       <main>
         <h1>Products</h1>
         <input type="text" onChange={(e) => setSearch(e.target.value)} value={search} placeholder="Search..." />
-        <div className="search-product-list">
-          <ProductCard productId="xyz" photo="https://pngimg.com/uploads/laptop/laptop_PNG101764.png" name="xyz" price={100} stock={10} handler={addToCartHandler} />
-        </div>
-        <article>
-          <button onClick={() => setPage((prev) => prev - 1)} disabled={!isPrevPage}>prev</button>
-          <span>{page} of 5</span>
-          <button onClick={() => setPage((prev) => prev + 1)} disabled={!isNextPage}>next</button>
-        </article>
+        {
+          productLoading ? <SkeletonLoader width="" /> : (
+            <div className="search-product-list">
+              {
+                productLoading ? "Loading..." : searchedData?.products.map((product) => (
+                  <ProductCard key={product._id} productId={product._id} photo={product.photo} name={product.name} price={product.price} stock={product.stock} handler={addToCartHandler} />
+                ))
+              }
+            </div>
+          )
+        }
+        {
+          searchedData && searchedData?.totalPages >= 1 && (
+            <article>
+              <button onClick={() => setPage((prev) => prev - 1)} disabled={!isPrevPage}>prev</button>
+              <span>{page} of {searchedData.totalPages}</span>
+              <button onClick={() => setPage((prev) => prev + 1)} disabled={!isNextPage}>next</button>
+            </article>
+          )
+        }
       </main>
     </div>
   )

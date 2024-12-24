@@ -36,7 +36,6 @@ export const newProduct = TryCatch(async (
     return res.status(201).json({
         status: true,
         message: "Product created successfully",
-        data: product
     });
 });
 
@@ -55,7 +54,7 @@ export const getLatestProducts = TryCatch(async (
     }
     return res.status(200).json({
         status: true,
-        data: products
+        products: products
     });
 });
 
@@ -74,7 +73,7 @@ export const getAllCategory = TryCatch(async (
     }
     return res.status(200).json({
         status: true,
-        data: categories
+        categories: categories
     });
 });
 
@@ -93,7 +92,7 @@ export const getAdminProducts = TryCatch(async (
     }
     return res.status(200).json({
         status: true,
-        data: products
+        products: products
     });
 });
 export const getSingleProduct = TryCatch(async (req, res, next) => {
@@ -110,7 +109,7 @@ export const getSingleProduct = TryCatch(async (req, res, next) => {
     }
     return res.status(200).json({
         status: true,
-        data: product
+        product: product
     });
 });
 
@@ -141,7 +140,6 @@ export const updateProduct = TryCatch(async (req, res, next) => {
     return res.status(200).json({
         status: true,
         message: "Product updated successfully",
-        data: product
     });
 });
 
@@ -190,7 +188,7 @@ export const searchProduct = TryCatch(async (
     const totalPages = Math.ceil(filteredOnlyProducts.length / limit);
     return res.status(200).json({
         status: true,
-        data: products,
+        products: products,
         totalPages,
     });
 });

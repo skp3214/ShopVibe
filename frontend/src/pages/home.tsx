@@ -3,10 +3,20 @@ import ProductCard from "../components/product-card.tsx"
 import { useLatestProductsQuery } from "../redux/api/ProductAPI.ts";
 import toast from "react-hot-toast";
 import { SkeletonLoader } from "../components/loader.tsx";
+import { CartItem } from "../types/types.ts";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../redux/reducer/CartReducer.ts";
 
 const Home = () => {
   const { data, isLoading, isError } = useLatestProductsQuery("");
-  const addToCartHandler = () => { };
+  const dispatch = useDispatch();
+  const addToCartHandler = (cartItem:CartItem) => {
+    if(cartItem.stock<=0){
+      return toast.error("Out of stock")
+    }
+    dispatch(addToCart(cartItem))
+    toast.success("Added to cart")
+  };
   if (isLoading) return <>
     <SkeletonLoader width="" />
   </>

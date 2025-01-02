@@ -2,28 +2,31 @@ import { useEffect, useState } from "react";
 import { VscError } from "react-icons/vsc";
 import CartItems from "../components/cart-items";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { CartReducerIntialState } from "../types/reducer.types";
+import { CartItem } from "../types/types";
+import { addToCart, calculatePrice, removeFromCart } from "../redux/reducer/CartReducer";
 
-const subtotal = 4000;
-const tax = Math.round(subtotal * 0.18);
-const shippingCharges = 220;
-const Discount = 400;
-const total = subtotal + tax + shippingCharges - Discount;
-const cartItems = [
-  {
-    productId: "123",
-    name: "Asus",
-    price: 100,
-    quantity: 10,
-    stock: 40,
-    photo: "https://pngimg.com/uploads/laptop/laptop_PNG101764.png",
-    handler: () => {
-
-    }
-  }
-]
 const Cart = () => {
+  const {cartItems,subtotal,tax,total,shippingCharges,discount}=useSelector((state:{cartReducer:CartReducerIntialState})=>state.cartReducer)
   const [couponCode, setCouponCode] = useState<string>("");
   const [isValidCouponCode, setIsValidCouponCode] = useState<boolean>(false);
+  const dispatch = useDispatch();
+  const incrementHandler = (cartItem:CartItem) => {
+    if(cartItem.quantity>=cartItem.stock){
+      return;
+    }
+    dispatch(addToCart({...cartItem,quantity:cartItem.quantity+1}))
+  };
+  const decrementHandler = (cartItem:CartItem) => {
+    if(cartItem.quantity<=1){
+      return;
+    }
+    dispatch(addToCart({...cartItem,quantity:cartItem.quantity-1}))
+  };
+  const removeHandler = (id:string) => {
+    dispatch(removeFromCart(id))
+  };
   useEffect(() => {
     const id = setTimeout(() => {
       if (Math.random() > 0.5) {
@@ -38,13 +41,16 @@ const Cart = () => {
       setIsValidCouponCode(false)
     }
   }, [couponCode])
+  useEffect(()=>{
+    dispatch(calculatePrice())
+  },[cartItems])
   return (
     <div className="cart">
       <main>
         {
           cartItems.length>0?(
               cartItems.map((item, index) => (
-                <CartItems key={index} cartItems={item} />
+                <CartItems key={index} cartItem={item} incrementHandler={incrementHandler} decrementHandler={decrementHandler} removeHandler={removeHandler} />
               ))
           ):(
             <h1>No items in cart</h1>
@@ -56,7 +62,7 @@ const Cart = () => {
         <p>Tax: ₹{tax}</p>
         <p>Shipping Charges: ₹{shippingCharges}</p>
         <p>
-          Discount: <em className="red"> - ₹{Discount}</em>
+          Discount: <em className="red"> - ₹{discount}</em>
         </p>
         <p><b>Total: ₹{total}</b></p>
         <input
@@ -66,7 +72,7 @@ const Cart = () => {
           onChange={(e) => setCouponCode(e.target.value)}
         />
         {
-          couponCode && (isValidCouponCode ? (<span className="green">₹{Discount} off using the <code>{couponCode}</code></span>) : (<span className="red">Invalid Coupon <VscError /></span>))
+          couponCode && (isValidCouponCode ? (<span className="green">₹{discount} off using the <code>{couponCode}</code></span>) : (<span className="red">Invalid Coupon <VscError /></span>))
         }
 
         {

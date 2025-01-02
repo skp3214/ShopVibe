@@ -4,6 +4,9 @@ import { useCategoriesQuery, useSearchedProductsQuery } from "../redux/api/Produ
 import { CustomError } from "../types/api.types";
 import toast from "react-hot-toast";
 import { SkeletonLoader } from "../components/loader";
+import { CartItem } from "../types/types";
+import { addToCart } from "../redux/reducer/CartReducer";
+import { useDispatch } from "react-redux";
 
 const Search = () => {
   const { data: categoriesResponse, isLoading: loadingCategories, isError, error } = useCategoriesQuery("");
@@ -17,12 +20,17 @@ const Search = () => {
   const [maxPrice, setMaxPrice] = useState("100000");
   const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
-
+  const dispatch = useDispatch();
   const { isLoading: productLoading, data: searchedData,
     isError: productIsError, error: productError
   } = useSearchedProductsQuery({ search, sort, price: Number(maxPrice), category, page });
-  const addToCartHandler = () => { };
-  const isPrevPage = page > 1;
+  const addToCartHandler = (cartItem:CartItem) => {
+    if(cartItem.stock<=0){
+      return toast.error("Out of stock")
+    }
+    dispatch(addToCart(cartItem))
+    toast.success("Added to cart")
+  };  const isPrevPage = page > 1;
   const isNextPage = searchedData && page < searchedData.totalPages;
   if (productIsError) {
     toast.error((productError as CustomError)?.data?.message || "An error occurred");

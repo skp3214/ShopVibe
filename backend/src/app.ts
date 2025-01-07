@@ -21,7 +21,7 @@ config(
 const MONGO_URI=process.env.MONGO_URI||"";
 const StripeKey=process.env.STRIPE_KEY||"";
 connectDB(MONGO_URI as string);
-// export const stripe=new Stripe(StripeKey)
+export const stripe=new Stripe(StripeKey)
 export const myCache = new NodeCache();
 
 const app = express();

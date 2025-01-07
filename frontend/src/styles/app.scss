@@ -106,7 +106,13 @@ dialog {
 }
 
 
-
+.not-found{
+  @include flex(column);
+  >svg{
+    font-size: 5rem;
+  }
+  height: 80vh;
+}
 
 
 

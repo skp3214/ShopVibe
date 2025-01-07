@@ -31,9 +31,8 @@ export const newOrder = TryCatch(async (
     await invalidatesCache({ product: true, order: true, admin: true, userId: user, productId:orderItems.map(item=>item.productId) });
 
     res.status(200).json({
-        success: true,
+        status: true,
         message: "Order placed successfully",
-        order
     });
 
 });
@@ -54,7 +53,7 @@ export const MyOrders = TryCatch(async (
         myCache.set(`myorder-${id}`, JSON.stringify(orders));
     }
     res.status(200).json({
-        success: true,
+        status: true,
         orders
     });
 });
@@ -74,7 +73,7 @@ export const AdminOrders = TryCatch(async (
         myCache.set(key, JSON.stringify(orders));
     }
     res.status(200).json({
-        success: true,
+        status: true,
         orders
     });
 });
@@ -98,8 +97,8 @@ export const getSingleOrder = TryCatch(async (
         myCache.set(key, JSON.stringify(order));
     }
     res.status(200).json({
-        success: true,
-        order
+        status: true,
+        orders:order
     });
 });
 
@@ -126,7 +125,7 @@ export const processOrder = TryCatch(async (
     await order.save();
     await invalidatesCache({ product: false, order: true, admin: true, userId: order.user, orderId: String(order._id) });
     res.status(200).json({
-        success: true,
+        status: true,
         message: "Order processed successfully"
     });
 });
@@ -144,7 +143,7 @@ export const deleteOrder = TryCatch(async (
     await order.deleteOne();
     await invalidatesCache({ product: false, order: true, admin: true, userId: order.user, orderId: String(order._id) });
     res.status(200).json({
-        success: true,
+        status: true,
         message: "Order deleted successfully"
     });
 });

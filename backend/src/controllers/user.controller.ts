@@ -40,7 +40,7 @@ export const getAllUsers = TryCatch(
 
         return res.status(200).json({
             status: true,
-            data: users
+            users
         });
     }
 );

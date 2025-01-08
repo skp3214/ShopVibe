@@ -114,6 +114,20 @@ dialog {
   height: 80vh;
 }
 
+.checkout-container{
+  max-width: 400px;
+  margin: auto;
+  width: 100%;
+  > form{
+    @include flex(column, flex-start, stretch, 2rem);
+    > button{
+      @include btn(1rem,$color3,$color1);
+      width: 100%;
+      font-size: 1.1rem;
+    }
+  }
+}
+
 
 
 

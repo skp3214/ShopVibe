@@ -2,11 +2,16 @@ import { ChangeEvent, useEffect, useState } from "react"
 import { BiArrowBack } from "react-icons/bi"
 import { useNavigate } from "react-router-dom"
 import { CartReducerIntialState } from "../types/reducer.types"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import axios from "axios"
+import { server } from "../redux/store"
+import toast from "react-hot-toast"
+import { saveShippingInfo } from "../redux/reducer/CartReducer"
 
 const Shipping = () => {
-    const {cartItems}=useSelector((state:{cartReducer:CartReducerIntialState})=>state.cartReducer)
+    const {cartItems,total}=useSelector((state:{cartReducer:CartReducerIntialState})=>state.cartReducer)
     const navigate=useNavigate();
+    const dispatch=useDispatch();
     const [shippingInfo, setShippingInfo] = useState({
         address: "",
         city: "",
@@ -22,10 +27,28 @@ const Shipping = () => {
             return navigate("/cart");
         }
     },[cartItems])
+    
+    const submitHandler = async(e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        dispatch(saveShippingInfo(shippingInfo));
+        try{
+            const {data}=await axios.post(`${server}/api/v1/payment/create`,
+                {amount:total},
+                {headers:{
+                    "Content-Type":"application/json",
+                }}
+            );
+            navigate("/pay",{state:data.client_secret});
+        }
+        catch(err){
+            console.log(err);
+            toast.error("Something went wrong");
+        }
+    }
     return (
         <div className="shipping">
             <button className="back-btn" onClick={() => navigate(-1)}><BiArrowBack /></button>
-            <form>
+            <form onSubmit={submitHandler}>
                 <h1>Shipping Address</h1>
                 <input type="text" name="address" placeholder="Enter Your Address" onChange={changeHandler} value={shippingInfo.address} />
                 <input type="text" name="city" placeholder="Enter Your City" onChange={changeHandler} value={shippingInfo.city} />

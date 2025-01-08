@@ -19,3 +19,5 @@ export const store = configureStore({
         .concat(ProductApi.middleware)
         .concat(OrderApi.middleware)
 })
+
+export type RootState = ReturnType<typeof store.getState>;

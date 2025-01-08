@@ -17,6 +17,7 @@ const Shipping = lazy(() => import("./pages/shipping"))
 const Orders = lazy(() => import("./pages/orders"))
 const Login = lazy(() => import("./pages/login"))
 const NotFound = lazy(() => import("./pages/not-found"))
+const Checkout = lazy(() => import("./pages/checkout"))
 
 const Dashboard = lazy(() => import("./pages/admin/dashboard"));
 const Products = lazy(() => import("./pages/admin/products"));
@@ -71,6 +72,7 @@ const App = () => {
             <Route element={<ProtectedRoute isAuthenticated={user ? true : false} />}>
               <Route path="/shipping" element={<Shipping />} />
               <Route path="/orders" element={<Orders />} />
+              <Route path="/pay" element={<Checkout />} />
             </Route>
 
             <Route

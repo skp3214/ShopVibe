@@ -75,10 +75,10 @@ export const CalculatePercentage = (
     lastMonth: number
 ) => {
     if (lastMonth === 0) {
-        return 100;
+        return currentMonth*100;
     }
     const percentage = ((currentMonth) / lastMonth) * 100;
-    return Number(percentage.toFixed(2));
+    return Number(percentage.toFixed(0));
 }
 
 export const getInventories = async ({

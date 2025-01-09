@@ -1,4 +1,4 @@
-import { CartItem, Order, Product, ShippingInfo, User } from "./types";
+import { CartItem, Order, Product, ShippingInfo, Stats, User } from "./types";
 
 export type MessageResponse = {
     status: boolean;
@@ -10,9 +10,9 @@ export type UserResponse = {
     user: User;
 }
 
-export type AllUsersResponse={
-    status:boolean;
-    users:User[];
+export type AllUsersResponse = {
+    status: boolean;
+    users: User[];
 }
 
 export type AllProductResponse = {
@@ -29,17 +29,31 @@ export type SearchedProductsResponse = AllProductResponse & {
     totalPages: number;
 }
 
+export type AllOrderResponse = {
+    status: boolean;
+    orders: Order[];
+}
+
+export type OrderDetailsResponse = {
+    status: boolean;
+    orders: Order;
+}
+
+export type ProductResponse = {
+    status: boolean;
+    product: Product;
+}
+
+export type StatsResponse={
+    success:boolean;
+    stats:Stats;
+}
 export type SearchedProductRequest = {
     price: number;
     page: number;
     sort: string;
     category: string;
     search: string;
-}
-
-export type ProductResponse = {
-    status: boolean;
-    product: Product;
 }
 
 export type NewProductRequestBody = {
@@ -52,10 +66,12 @@ export type UpdateProductRequestBody = {
     productId: string;
     formData: FormData;
 }
+
 export type DeleteProductRequestBody = {
     userId: string;
     productId: string;
 }
+
 export type CustomError = {
     status: number;
     data: {
@@ -72,23 +88,15 @@ export type NewOrderRequest = {
     shippingCharges: number;
     discount: number;
     total: number;
-    user:string;
+    user: string;
 }
 
-export type UpdateOrderRequest={
-    userId:string;
-    orderId:string;
+export type UpdateOrderRequest = {
+    userId: string;
+    orderId: string;
 }
 
-export type AllOrderResponse = {
-    status: boolean;
-    orders:Order[];
-}
-export type OrderDetailsResponse = {
-    status: boolean;
-    orders:Order;
-}
-export type DeleteUserRequest={
-    userId:string;
-    adminId:string;
+export type DeleteUserRequest = {
+    userId: string;
+    adminId: string;
 }

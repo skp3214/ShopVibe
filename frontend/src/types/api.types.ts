@@ -10,6 +10,11 @@ export type UserResponse = {
     user: User;
 }
 
+export type AllUsersResponse={
+    status:boolean;
+    users:User[];
+}
+
 export type AllProductResponse = {
     status: boolean;
     products: Product[];
@@ -82,4 +87,8 @@ export type AllOrderResponse = {
 export type OrderDetailsResponse = {
     status: boolean;
     orders:Order;
+}
+export type DeleteUserRequest={
+    userId:string;
+    adminId:string;
 }

@@ -143,9 +143,9 @@ export const getDashboardStats = TryCatch(async (
         }
         const changePercent = {
             revenue: revenueChangePercentage,
-            product: productChangePercentage,
-            user: userChangePercentage,
-            order: orderChangePercentage,
+            products: productChangePercentage,
+            users: userChangePercentage,
+            orders: orderChangePercentage,
         }
 
         const chart = {

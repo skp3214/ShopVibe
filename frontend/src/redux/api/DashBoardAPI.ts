@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { StatsResponse } from "../../types/api.types";
+import { PieResponse, StatsResponse } from "../../types/api.types";
 
 export const DashBoardApi = createApi({
     reducerPath: "dashBoardApi",
@@ -10,7 +10,7 @@ export const DashBoardApi = createApi({
             query: (id) => "stats?id=" + id,
             providesTags: ["DashBoard"]
         }),
-        pie: builder.query<any, string>({
+        pie: builder.query<PieResponse, string>({
             query: (id) => "pie?id=" + id,
             providesTags: ["DashBoard"]
         }),

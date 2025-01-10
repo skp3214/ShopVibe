@@ -57,7 +57,10 @@ const Productmanagement = () => {
   const submitHandler = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     const formData = new FormData();
-    if (!nameUpdate || !priceUpdate || !stockUpdate || !categoryUpdate) {
+    if(!stockUpdate){
+      setStockUpdate(0);
+    }
+    if (!nameUpdate || !priceUpdate || !categoryUpdate) {
       return;
     }
     if (nameUpdate) {
@@ -66,9 +69,9 @@ const Productmanagement = () => {
     if (priceUpdate) {
       formData.set("price", priceUpdate.toString());
     }
-    if (stockUpdate) {
+    if (stockUpdate !== undefined && stockUpdate !== null) {
       formData.set("stock", stockUpdate.toString());
-    }
+    }    
     if (categoryUpdate) {
       formData.set("category", categoryUpdate);
     }
@@ -76,6 +79,9 @@ const Productmanagement = () => {
       formData.set("photo", photoFile);
     }
 
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
     const res = await updateProduct({ userId: user?._id as string, productId: _id as string, formData })
     responseToast(res, navigate, "/admin/product")
   };

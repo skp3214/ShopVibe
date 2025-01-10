@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { PieResponse, StatsResponse } from "../../types/api.types";
+import { BarResponse, LineResponse, PieResponse, StatsResponse } from "../../types/api.types";
 
 export const DashBoardApi = createApi({
     reducerPath: "dashBoardApi",
@@ -14,11 +14,11 @@ export const DashBoardApi = createApi({
             query: (id) => "pie?id=" + id,
             providesTags: ["DashBoard"]
         }),
-        line: builder.query<any, string>({
+        line: builder.query<LineResponse, string>({
             query: (id) => "line?id=" + id,
             providesTags: ["DashBoard"]
         }),
-        bar: builder.query<any, string>({
+        bar: builder.query<BarResponse, string>({
             query: (id) => "bar?id=" + id,
             providesTags: ["DashBoard"]
         })

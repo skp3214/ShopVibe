@@ -103,3 +103,16 @@ export type Pie = {
         old: number;
     }
 }
+
+export type Bar={
+    products:number[];
+    users:number[];
+    orders:number[];
+}
+
+export type Line={
+    products:number[];
+    revenue:number[];
+    discount:number[];
+    users:number[];
+}

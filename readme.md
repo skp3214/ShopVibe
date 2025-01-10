@@ -2,6 +2,10 @@
 
 Welcome to **ShopVibe**, a full-featured e-commerce platform built using the MERN stack and TypeScript for both the frontend and backend. This application ensures a seamless shopping experience with features like user authentication, cart management, product browsing, and an admin dashboard for managing products, orders, and transactions.
 
+
+https://github.com/user-attachments/assets/5f6d020f-cf13-41df-8192-c40b2f93990b
+
+
 ---
 
 ## Website Link

@@ -4,6 +4,9 @@ Welcome to **ShopVibe**, a full-featured e-commerce platform built using the MER
 
 ---
 
+## Website Link
+[https://shopvibe-live.vercel.app/](https://shopvibe-live.vercel.app/)
+
 ## Features
 
 ### User Features:

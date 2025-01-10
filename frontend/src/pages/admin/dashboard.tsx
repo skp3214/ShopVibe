@@ -8,19 +8,17 @@ import Table from "../../components/admin/DashboardTable";
 import { useStatsQuery } from "../../redux/api/DashBoardAPI";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { CustomError } from "../../types/api.types";
-import toast from "react-hot-toast";
 import { SkeletonLoader } from "../../components/loader";
+import { Navigate } from "react-router-dom";
 
 const Dashboard = () => {
   const { user } = useSelector((state: RootState) => state.userReducer);
 
-  const { isLoading, data, error, isError } = useStatsQuery(user?._id!);
+  const { isLoading, data, isError } = useStatsQuery(user?._id!);
 
   const stats = data?.stats!;
   if (isError) {
-    const err = error as CustomError;
-    toast.error(err.data.message);
+    return <Navigate to="/" />;
   }
   return (
     <div className="admin-container">

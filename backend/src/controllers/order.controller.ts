@@ -12,7 +12,7 @@ export const newOrder = TryCatch(async (
     next: NextFunction
 ) => {
     const { shippingInfo, orderItems, user, subtotal, tax, shippingCharges, discount, total } = req.body;
-    if (!shippingInfo || !orderItems || !user || !subtotal || !tax || !shippingCharges || !discount || !total) {
+    if (!shippingInfo || !orderItems || !user || !subtotal || !tax || !total) {
         return next(new ErrorHandler("Please fill all fields", 400));
     }
     const order = await Order.create({
@@ -28,7 +28,7 @@ export const newOrder = TryCatch(async (
 
     await reduceStock(orderItems);
 
-    await invalidatesCache({ product: true, order: true, admin: true, userId: user, productId:orderItems.map(item=>item.productId) });
+    await invalidatesCache({ product: true, order: true, admin: true, userId: user, productId:orderItems.map(item=>item.productID) });
 
     res.status(200).json({
         status: true,

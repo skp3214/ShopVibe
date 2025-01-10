@@ -61,7 +61,8 @@ export const invalidatesCache = async ({
 export const reduceStock = async (orderItems: OrderItemType[]) => {
     for (let i = 0; i < orderItems.length; i++) {
         const order = orderItems[i];
-        const product = await Product.findById(order.productId);
+
+        const product = await Product.findById(order.productID);
         if (!product) {
             throw new Error("Product not found");
         }

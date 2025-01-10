@@ -55,7 +55,7 @@ export type OrderItemType={
     photo:string;
     price:number;
     quantity:number;
-    productId:string;
+    productID:string;
 }
 export type shippingInfoType={
     address:string;

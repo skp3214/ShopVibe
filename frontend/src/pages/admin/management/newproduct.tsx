@@ -1,55 +1,53 @@
-import { ChangeEvent, useState, FormEvent } from "react";
+import { useState, FormEvent } from "react";
 import AdminSidebar from "../../../components/admin/AdminSidebar";
 import { useSelector } from "react-redux";
 import { UserReducerIntialState } from "../../../types/reducer.types";
 import { useNewProductMutation } from "../../../redux/api/ProductAPI";
 import { useNavigate } from "react-router-dom";
 import { responseToast } from "../../../utils/features";
+import { useFileHandler } from "6pp";
 
 const NewProduct = () => {
-  const {user}=useSelector(
-    (state:{userReducer:UserReducerIntialState})=>state.userReducer
+  const { user } = useSelector(
+    (state: { userReducer: UserReducerIntialState }) => state.userReducer
   )
-  const navigate=useNavigate()
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate()
   const [name, setName] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [price, setPrice] = useState<number>(1000);
   const [stock, setStock] = useState<number>(1);
-  const [photoPrev, setPhotoPrev] = useState<string>("");
-  const [photo, setPhoto] = useState<File>();
 
-  const [newProduct]=useNewProductMutation()
-  const changeImageHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const file: File | undefined = e.target.files?.[0];
+  const [newProduct] = useNewProductMutation()
 
-    const reader: FileReader = new FileReader();
+  const photos = useFileHandler("multiple", 20, 5);
 
-    if (file) {
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        if (typeof reader.result === "string") {
-          setPhotoPrev(reader.result);
-          setPhoto(file);
-        }
-      };
-    }
-  };
-
-  const submitHandler=async(e:FormEvent<HTMLFormElement>)=>{
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(!name || !price || stock<0 || !category || !photo){
-      return;
+    setIsLoading(true)
+    try {
+      if (!name || !price || stock < 0 || !category || photos.file.length < 1) {
+        return;
+      }
+
+      const formData = new FormData();
+      formData.set("name", name);
+      formData.set("price", price.toString());
+      formData.set("stock", stock.toString());
+      formData.set("category", category);
+
+      photos.file.forEach((file: File) => {
+        formData.append("photos", file)
+      })
+      const res = await newProduct({ id: user?._id as string, formData })
+      responseToast(res, navigate, "/admin/product")
+    } catch (error) {
+      console.log(error);
+      
     }
-
-    const formData=new FormData();
-    formData.set("name",name);
-    formData.set("price",price.toString());
-    formData.set("stock",stock.toString());
-    formData.set("category",category);
-    formData.set("photo",photo);
-
-    const res=await newProduct({id:user?._id as string,formData})
-    responseToast(res,navigate,"/admin/product")
+    finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -102,12 +100,19 @@ const NewProduct = () => {
             </div>
 
             <div>
-              <label>Photo</label>
-              <input type="file" required onChange={changeImageHandler} />
+              <label>Photos</label>
+              <input type="file" multiple required onChange={photos.changeHandler} />
             </div>
-
-            {photoPrev && <img src={photoPrev} alt="New Image" />}
-            <button type="submit">Create</button>
+            {
+              photos.error && <p>{photos.error}</p>
+            }
+            {
+              photos.preview &&
+              photos.preview.map((img: string, index: number) => (
+                <img key={index} src={img} alt="preview" />
+              ))
+            }
+            <button disabled={isLoading} type="submit">Create</button>
           </form>
         </article>
       </main>

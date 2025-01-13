@@ -2,10 +2,10 @@ import mongoose, { Document } from "mongoose";
 import { myCache } from "../app.js";
 import { Product } from "../models/product.js";
 import { InvalidatesCacheType, OrderItemType } from "../types/types.js";
-
+import { v2 as cloudinary, UploadApiResponse } from 'cloudinary';
 export const connectDB = (uri: string) => {
     mongoose.connect(uri, {
-        dbName: "ShopVibe",
+        dbName: "ShopVibeUpgrade",
     }).then(() => {
         console.log("Database Connected");
     }).catch((err) => {
@@ -46,8 +46,8 @@ export const invalidatesCache = async ({
 
         myCache.del(orderKeys);
     }
-    if(admin){
-        const adminKeys=[
+    if (admin) {
+        const adminKeys = [
             "dashboardStat",
             "admin-pie-charts",
             "barCharts",
@@ -76,7 +76,7 @@ export const CalculatePercentage = (
     lastMonth: number
 ) => {
     if (lastMonth === 0) {
-        return currentMonth*100;
+        return currentMonth * 100;
     }
     const percentage = ((currentMonth) / lastMonth) * 100;
     return Number(percentage.toFixed(0));
@@ -85,9 +85,10 @@ export const CalculatePercentage = (
 export const getInventories = async ({
     categories,
     productsCount,
-}: { categories: string[];
+}: {
+    categories: string[];
     productsCount: number;
- }) => {
+}) => {
     const categoriesCountPromise = categories.map((category) => {
         return Product.countDocuments({ category });
     });
@@ -103,18 +104,18 @@ export const getInventories = async ({
     });
     return categoryCount;
 }
-interface MyDocument  extends Document{
-    createdAt:Date;
-    discount?:number;
-    total?:number;
+interface MyDocument extends Document {
+    createdAt: Date;
+    discount?: number;
+    total?: number;
 }
-type FuncProps={
-    length:number;
-    docArr:MyDocument[];
-    property?:"discount"|"total";
+type FuncProps = {
+    length: number;
+    docArr: MyDocument[];
+    property?: "discount" | "total";
 }
-export const getChartData=({length,docArr,property}:FuncProps)=>{
-    const data:number[] = new Array(length).fill(0);
+export const getChartData = ({ length, docArr, property }: FuncProps) => {
+    const data: number[] = new Array(length).fill(0);
     const today = new Date();
     docArr.forEach((i) => {
         const creationDate = new Date(i.createdAt);
@@ -124,4 +125,38 @@ export const getChartData=({length,docArr,property}:FuncProps)=>{
         }
     });
     return data;
+}
+const getBase64 = (file: Express.Multer.File) => {
+    return `data:${file.mimetype};base64,${file.buffer.toString("base64")}`;
+}
+export const uploadToCloudinary = async (files: Express.Multer.File[]) => {
+    const promises = files.map(async (file) => {
+        return new Promise<UploadApiResponse>((resolve, reject) => {
+            cloudinary.uploader.upload(getBase64(file), (err, result) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(result!);
+            });
+        });
+    });
+    const result = await Promise.all(promises);
+    return result.map((i) => ({
+        public_id: i.public_id,
+        url: i.secure_url,
+    }));
+}
+
+export const deleteFromCloudinary = async (public_id: string[]) => {
+    const promises = public_id.map((id) => {
+        return new Promise((resolve, reject) => {
+            cloudinary.uploader.destroy(id, (err, result) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(result);
+            });
+        });
+    });
+    await Promise.all(promises);
 }

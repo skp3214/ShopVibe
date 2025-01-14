@@ -1,4 +1,4 @@
-import { Bar, CartItem, Line, Order, Pie, Product, ShippingInfo, Stats, User } from "./types";
+import { Bar, CartItem, CouponType, Line, Order, Pie, Product, ShippingInfo, Stats, User } from "./types";
 
 export type MessageResponse = {
     status: boolean;
@@ -44,24 +44,39 @@ export type ProductResponse = {
     product: Product;
 }
 
-export type StatsResponse={
-    success:boolean;
-    stats:Stats;
+export type StatsResponse = {
+    success: boolean;
+    stats: Stats;
 }
 
-export type PieResponse={
-    success:boolean;
-    charts:Pie;
+export type PieResponse = {
+    success: boolean;
+    charts: Pie;
 }
 
-export type BarResponse={
-    success:boolean;
-    charts:Bar;
+export type BarResponse = {
+    success: boolean;
+    charts: Bar;
 }
 
-export type LineResponse={
+export type LineResponse = {
+    success: boolean;
+    charts: Line;
+}
+
+export type AllDiscountResponse = {
+    success: boolean;
+    coupons: CouponType[];
+};
+
+export type SingleDiscountResponse = {
+    success: boolean;
+    coupons: CouponType;
+};
+
+export type DiscountMessageResponse={
     success:boolean;
-    charts:Line;
+    message:string;
 }
 
 export type SearchedProductRequest = {
@@ -115,4 +130,26 @@ export type UpdateOrderRequest = {
 export type DeleteUserRequest = {
     userId: string;
     adminId: string;
+}
+
+export type NewDiscountCouponRequest={
+    userId:string;
+    formData:{
+        couponCode:string;
+        amount:number;
+    };
+}
+
+export type CommonDiscountCouponRequest={
+    couponId:string;
+    userId:string;
+}
+
+export type UpdateDiscountCouponRequest={
+    couponId:string;
+    userId:string;
+    formData:{
+        couponCode:string;
+        amount:number;
+    }
 }

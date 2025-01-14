@@ -17,6 +17,8 @@ export interface Product {
         public_id: string;
         url: string;
     }[];
+    description: string;
+    ratings: number;
     _id: string;
 }
 
@@ -119,3 +121,9 @@ export type Line={
     discount:number[];
     users:number[];
 }
+
+export type CouponType = {
+    couponCode: string;
+    amount: number;
+    _id: string;
+  };

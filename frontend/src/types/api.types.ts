@@ -1,4 +1,4 @@
-import { Bar, CartItem, CouponType, Line, Order, Pie, Product, ShippingInfo, Stats, User } from "./types";
+import { Bar, CartItem, CouponType, Line, Order, Pie, Product, Review, ShippingInfo, Stats, User } from "./types";
 
 export type MessageResponse = {
     status: boolean;
@@ -74,9 +74,14 @@ export type SingleDiscountResponse = {
     coupons: CouponType;
 };
 
-export type DiscountMessageResponse={
-    success:boolean;
-    message:string;
+export type DiscountMessageResponse = {
+    success: boolean;
+    message: string;
+}
+
+export type ProductReviewResponse = {
+    status: boolean;
+    reviews: Review[];
 }
 
 export type SearchedProductRequest = {
@@ -132,24 +137,36 @@ export type DeleteUserRequest = {
     adminId: string;
 }
 
-export type NewDiscountCouponRequest={
-    userId:string;
-    formData:{
-        couponCode:string;
-        amount:number;
+export type NewDiscountCouponRequest = {
+    userId: string;
+    formData: {
+        couponCode: string;
+        amount: number;
     };
 }
 
-export type CommonDiscountCouponRequest={
-    couponId:string;
-    userId:string;
+export type CommonDiscountCouponRequest = {
+    couponId: string;
+    userId: string;
 }
 
-export type UpdateDiscountCouponRequest={
-    couponId:string;
-    userId:string;
-    formData:{
-        couponCode:string;
-        amount:number;
+export type UpdateDiscountCouponRequest = {
+    couponId: string;
+    userId: string;
+    formData: {
+        couponCode: string;
+        amount: number;
     }
+}
+
+export type NewReviewRequest = {
+    productId: string;
+    userId: string;
+    comment: string;
+    rating: number;
+}
+
+export type DeleteReviewRequest={
+    reviewId:string;
+    userId:string;
 }

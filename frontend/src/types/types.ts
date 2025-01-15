@@ -19,6 +19,7 @@ export interface Product {
     }[];
     description: string;
     ratings: number;
+    numOfReviews: number;
     _id: string;
 }
 
@@ -58,35 +59,35 @@ type ChangeAndCount = {
     orders: number;
 }
 
-type latestTransaction={
-    _id:string;
-    amount:number;
-    discount:number;
-    quantity:number;
-    status:string;
+type latestTransaction = {
+    _id: string;
+    amount: number;
+    discount: number;
+    quantity: number;
+    status: string;
 }
 export type Stats = {
-    changePercent:ChangeAndCount;
-    count:ChangeAndCount;
-    chart:{
-        order:number[];
-        revenue:number[];
+    changePercent: ChangeAndCount;
+    count: ChangeAndCount;
+    chart: {
+        order: number[];
+        revenue: number[];
     };
-    categoryCount:Record<string, number>[];
-    ratio:{
-        male:number;
-        female:number;
+    categoryCount: Record<string, number>[];
+    ratio: {
+        male: number;
+        female: number;
     };
     latestTransaction: latestTransaction[];
 }
 
 export type Pie = {
-    orderFullfillment : {
+    orderFullfillment: {
         processing: number;
         shipped: number;
         delivered: number;
     },
-    productCategories:Record<string, number>[],
+    productCategories: Record<string, number>[],
     stockAvailability: {
         inStock: number;
         outOfStock: number;
@@ -109,21 +110,33 @@ export type Pie = {
     }
 }
 
-export type Bar={
-    products:number[];
-    users:number[];
-    orders:number[];
+export type Bar = {
+    products: number[];
+    users: number[];
+    orders: number[];
 }
 
-export type Line={
-    products:number[];
-    revenue:number[];
-    discount:number[];
-    users:number[];
+export type Line = {
+    products: number[];
+    revenue: number[];
+    discount: number[];
+    users: number[];
 }
 
 export type CouponType = {
     couponCode: string;
     amount: number;
     _id: string;
-  };
+};
+
+export type Review={
+    _id:string;
+    comment:string;
+    rating:number;
+    userId:{
+        _id:string;
+        name:string;
+        photo:string;
+    };
+    productId:string;
+}

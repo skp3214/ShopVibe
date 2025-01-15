@@ -5,14 +5,16 @@ import ErrorHandler from "../utils/utility-class.js";
 import { Product } from "../models/product.js";
 import { rm } from "fs";
 import { myCache } from "../app.js";
-import { deleteFromCloudinary, invalidatesCache, uploadToCloudinary } from "../utils/features.js";
+import { deleteFromCloudinary, invalidatesCache, setProductRating, uploadToCloudinary } from "../utils/features.js";
+import { User } from "../models/user.js";
+import { Review } from "../models/review.js";
 // import {faker} from "@faker-js/faker";
 export const newProduct = TryCatch(async (
     req: Request<{}, {}, NewProductRequestBody>,
     res: Response,
     next: NextFunction
 ) => {
-    const { name, category, price, stock } = req.body;
+    const { name, category, price, stock, description } = req.body;
     const photos = req.files as Express.Multer.File[];
     console.log(photos);
     if (!photos) {
@@ -24,7 +26,7 @@ export const newProduct = TryCatch(async (
     if(photos.length>5){
         return next(new ErrorHandler("Please upload only 5 photos", 400));
     }
-    if (!name || !category || !price || !stock) {
+    if (!name || !category || !price || !stock || !description) {
         return next(new ErrorHandler("Please fill all fields", 400));
     }
 
@@ -34,7 +36,8 @@ export const newProduct = TryCatch(async (
         category: category.toLowerCase(),
         price,
         stock,
-        photos:photosUrl
+        photos:photosUrl,
+        description
     });
 
     await invalidatesCache({ product: true,admin:true });
@@ -124,12 +127,12 @@ export const updateProduct = TryCatch(async (req, res, next) => {
     if (!product) {
         return next(new ErrorHandler("Product not found", 404));
     }
-    const { name, category, price, stock } = req.body;
+    const { name, category, price, stock, description } = req.body;
     const photos = req.files as Express.Multer.File[];
     if (!name || !category || !price || !stock) {
         return next(new ErrorHandler("Please fill all fields", 400));
     }
-    if(photos){
+    if(photos && photos.length>0){
         const photosUrl=await uploadToCloudinary(photos);
         const ids=product.photos.map(photo=>photo.public_id);
         await deleteFromCloudinary(ids);
@@ -142,6 +145,7 @@ export const updateProduct = TryCatch(async (req, res, next) => {
     product.category = category.toLowerCase();
     product.price = price;
     product.stock = stock;
+    product.description = description
     
     await product.save();
 
@@ -204,6 +208,100 @@ export const searchProduct = TryCatch(async (
         totalPages,
     });
 });
+
+export const NewReview = TryCatch(async (req, res, next) => {
+    const user=await User.findById(req.query.id);
+    if(!user){
+        return next(new ErrorHandler("Please login first",401));
+    }
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+        return next(new ErrorHandler("Product not found", 404));
+    }
+    const {comment,rating}=req.body;
+    if(!rating){
+        return next(new ErrorHandler("Please fill rating fields",400));
+    }
+    if(rating<1 || rating>5){
+        return next(new ErrorHandler("Rating must be between 1 and 5",400));
+    }
+    const alreadyReviewed=await Review.findOne({productId:product._id,userId:user._id});
+    if(alreadyReviewed){
+        const review=await Review.findByIdAndUpdate(alreadyReviewed._id,{
+            comment,
+            rating
+        },{
+            new:true,
+            runValidators:true
+        });
+    }
+    else{
+        await Review.create({
+            comment,
+            rating,
+            productId:product._id,
+            userId:user._id
+        })
+    }
+
+    const {averageRating,reviewsCount}=await setProductRating(product._id);
+    product.ratings=Math.floor(averageRating);
+    product.numOfReviews=reviewsCount;
+    await product.save();
+
+    await invalidatesCache({ product: true, admin:true, productId: String(product._id)});
+
+    return res.status(alreadyReviewed?200:201).json({
+        status: true,
+        message: alreadyReviewed?"Review updated successfully":"Review created successfully"
+    });
+});
+export const DeleteReview = TryCatch(async (req, res, next) => {
+    const user=await User.findById(req.query.id);
+    if(!user){
+        return next(new ErrorHandler("Please login first",401));
+    }
+    const review=await Review.findById(req.params.id);
+    if(!review){
+        return next(new ErrorHandler("Review not found",404));
+    }
+    const isAuthenticUser=review.userId.toString()===user._id.toString();
+    if(!isAuthenticUser){
+        return next(new ErrorHandler("You are not authorized to delete this review",401));
+    }
+    await review.deleteOne();
+
+    const product = await Product.findById(review.productId);
+    if (!product) {
+        return next(new ErrorHandler("Product not found", 404));
+    }
+
+    const {averageRating,reviewsCount}=await setProductRating(product._id);
+    product.ratings=Math.floor(averageRating);
+    product.numOfReviews=reviewsCount;
+    await product.save();
+
+    await invalidatesCache({ product: true, admin:true, productId: String(review.productId)});
+
+    return res.status(200).json({
+        status: true,
+        message: "Review Deleted Successfully"
+    });
+});
+
+export const getSingleProductAllReviews = TryCatch(async (req: Request, res: Response, next: NextFunction) => {
+    const reviews = await Review.find({
+        productId: req.params.id
+    }).populate("userId", "name photo")
+    .sort({ updatedAt: -1 });
+    ;
+
+    return res.status(200).json({
+        status: true,
+        reviews
+    });
+});
+
 
 // const generateRandomProducts = async (count: number = 10) => {
 //   const products = [];

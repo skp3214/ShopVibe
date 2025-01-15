@@ -3,6 +3,7 @@ import { myCache } from "../app.js";
 import { Product } from "../models/product.js";
 import { InvalidatesCacheType, OrderItemType } from "../types/types.js";
 import { v2 as cloudinary, UploadApiResponse } from 'cloudinary';
+import { Review } from "../models/review.js";
 export const connectDB = (uri: string) => {
     mongoose.connect(uri, {
         dbName: "ShopVibeUpgrade",
@@ -159,4 +160,16 @@ export const deleteFromCloudinary = async (public_id: string[]) => {
         });
     });
     await Promise.all(promises);
+}
+
+export const setProductRating = async (productId: mongoose.Types.ObjectId) => {
+    let averageRating = 0;
+    const reviews = await Review.find({ productId: productId });
+    if (reviews.length > 0) {
+        averageRating = reviews.reduce((acc, review) => review.rating + acc, 0) / reviews.length;
+    }
+    else {
+        averageRating = 0;
+    }
+    return {averageRating:Math.floor(averageRating), reviewsCount: reviews.length};
 }

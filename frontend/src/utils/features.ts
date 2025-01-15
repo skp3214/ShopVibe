@@ -13,7 +13,7 @@ type ResType =
         error: FetchBaseQueryError | SerializedError
     };
 
-export const responseToast = (res:ResType,navigate:NavigateFunction|null,url:string) => {
+export const responseToast = (res: ResType, navigate: NavigateFunction | null, url: string) => {
     if ("data" in res) {
         if (res.data.status) {
             toast.success(res.data.message);
@@ -23,7 +23,7 @@ export const responseToast = (res:ResType,navigate:NavigateFunction|null,url:str
         }
     } else {
         const error = res.error as FetchBaseQueryError;
-        const messageResponse=error.data as MessageResponse;
+        const messageResponse = error.data as MessageResponse;
         toast.error(messageResponse.message);
     }
 }
@@ -35,7 +35,7 @@ type ResTypeDiscount =
         error: FetchBaseQueryError | SerializedError
     };
 
-export const responseToastDiscount = (res:ResTypeDiscount,navigate:NavigateFunction|null,url:string) => {
+export const responseToastDiscount = (res: ResTypeDiscount, navigate: NavigateFunction | null, url: string) => {
     if ("data" in res) {
         if (res.data.success) {
             toast.success(res.data.message);
@@ -45,30 +45,35 @@ export const responseToastDiscount = (res:ResTypeDiscount,navigate:NavigateFunct
         }
     } else {
         const error = res.error as FetchBaseQueryError;
-        const messageResponse=error.data as MessageResponse;
+        const messageResponse = error.data as MessageResponse;
         toast.error(messageResponse.message);
     }
 }
 
-export const getLastMonths=()=>{
-    const currentData=moment();
+export const getLastMonths = () => {
+    const currentData = moment();
 
     currentData.date(1);
 
-    const last6Months:string[]=[];
-    const last12Months:string[]=[];
-    
-    for(let i=0;i<6;i++){
-        const monthDate=currentData.clone().subtract(i,"months");
-        const monthName=monthDate.format("MMMM");
+    const last6Months: string[] = [];
+    const last12Months: string[] = [];
+
+    for (let i = 0; i < 6; i++) {
+        const monthDate = currentData.clone().subtract(i, "months");
+        const monthName = monthDate.format("MMMM");
         last6Months.unshift(monthName);
     }
 
-    for(let i=0;i<12;i++){
-        const monthDate=currentData.clone().subtract(i,"months");
-        const monthName=monthDate.format("MMMM");
+    for (let i = 0; i < 12; i++) {
+        const monthDate = currentData.clone().subtract(i, "months");
+        const monthName = monthDate.format("MMMM");
         last12Months.unshift(monthName);
     }
 
-    return {last6Months,last12Months};
+    return { last6Months, last12Months };
 }
+
+export const transformImage = (url: string, width = 200) => {
+    const newUrl = url.replace("upload/", `upload/dpr_auto/w_${width}/`);
+    return newUrl;
+};

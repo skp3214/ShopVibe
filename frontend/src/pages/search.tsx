@@ -24,13 +24,13 @@ const Search = () => {
   const { isLoading: productLoading, data: searchedData,
     isError: productIsError, error: productError
   } = useSearchedProductsQuery({ search, sort, price: Number(maxPrice), category, page });
-  const addToCartHandler = (cartItem:CartItem) => {
-    if(cartItem.stock<=0){
+  const addToCartHandler = (cartItem: CartItem) => {
+    if (cartItem.stock <= 0) {
       return toast.error("Out of stock")
     }
     dispatch(addToCart(cartItem))
     toast.success("Added to cart")
-  };  const isPrevPage = page > 1;
+  }; const isPrevPage = page > 1;
   const isNextPage = searchedData && page < searchedData.totalPages;
   if (productIsError) {
     toast.error((productError as CustomError)?.data?.message || "An error occurred");
@@ -78,7 +78,7 @@ const Search = () => {
             <div className="search-product-list">
               {
                 productLoading ? "Loading..." : searchedData?.products.map((product) => (
-                  <ProductCard key={product._id} productId={product._id} photo={product.photo} name={product.name} price={product.price} stock={product.stock} handler={addToCartHandler} />
+                  <ProductCard key={product._id} productId={product._id} photos={product.photos} name={product.name} price={product.price} stock={product.stock} handler={addToCartHandler} />
                 ))
               }
             </div>

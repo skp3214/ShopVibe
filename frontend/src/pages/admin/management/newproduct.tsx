@@ -17,6 +17,7 @@ const NewProduct = () => {
   const [category, setCategory] = useState<string>("");
   const [price, setPrice] = useState<number>(1000);
   const [stock, setStock] = useState<number>(1);
+  const [description, setDescription] = useState<string>("");
 
   const [newProduct] = useNewProductMutation()
 
@@ -26,12 +27,13 @@ const NewProduct = () => {
     e.preventDefault();
     setIsLoading(true)
     try {
-      if (!name || !price || stock < 0 || !category || photos.file.length < 1) {
+      if (!name || !price || stock < 0 || !category || photos.file.length < 1 || !description) {
         return;
       }
 
       const formData = new FormData();
       formData.set("name", name);
+      formData.set("description", description);
       formData.set("price", price.toString());
       formData.set("stock", stock.toString());
       formData.set("category", category);
@@ -65,6 +67,15 @@ const NewProduct = () => {
                 placeholder="Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div>
+              <label>Description</label>
+              <textarea
+                required
+                placeholder="Description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
               />
             </div>
             <div>

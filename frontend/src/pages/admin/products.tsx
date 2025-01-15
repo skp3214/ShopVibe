@@ -25,7 +25,6 @@ const columns: Column<DataType>[] = [
   { Header: "Action", accessor: "action" },
 ];
 
-
 const Products = () => {
   const { data, isError, isLoading, error } = useAllProductsQuery("");
   const [rows, setRows] = useState<DataType[]>([]);
@@ -40,7 +39,11 @@ const Products = () => {
     if (data?.products) {
       setRows(
         data.products.map((product) => ({
-          photo: <img src={product.photos[0].url} alt={product.name} />,
+          photo: product.photos && product.photos[0] ? (
+            <img src={product.photos[0].url} alt={product.name} />
+          ) : (
+            <span>No Image</span>
+          ),
           name: product.name,
           price: product.price,
           stock: product.stock,

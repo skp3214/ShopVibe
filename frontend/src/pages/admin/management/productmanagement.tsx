@@ -18,10 +18,10 @@ const Productmanagement = () => {
   const params = useParams()
   const navigate = useNavigate()
   const { data, isLoading, isError } = useProductDetailsQuery(params.id!);
-  console.log(data);
-  const { _id, name, price, stock, category, photos } = data?.product || {
+  const { _id, name, description, price, stock, category, photos } = data?.product || {
     _id: "",
     name: "",
+    description: "",
     price: 0,
     stock: 0,
     category: "",
@@ -33,6 +33,7 @@ const Productmanagement = () => {
   const [stockUpdate, setStockUpdate] = useState<number>(stock);
   const [nameUpdate, setNameUpdate] = useState<string>(name);
   const [categoryUpdate, setCategoryUpdate] = useState<string>(category);
+  const [descriptionUpdate, setDescriptionUpdate] = useState<string>(description);
 
   const [updateProduct] = useUpdateProductMutation()
   const [deleteProduct] = useDeleteProductMutation()
@@ -47,11 +48,15 @@ const Productmanagement = () => {
       if (!stockUpdate) {
         setStockUpdate(0);
       }
-      if (!nameUpdate || !priceUpdate || !categoryUpdate) {
+      if (!nameUpdate || !priceUpdate || !categoryUpdate || !description) {
         return;
       }
+
       if (nameUpdate) {
         formData.set("name", nameUpdate);
+      }
+      if (descriptionUpdate) {
+        formData.set("description", descriptionUpdate);
       }
       if (priceUpdate) {
         formData.set("price", priceUpdate.toString());
@@ -68,9 +73,6 @@ const Productmanagement = () => {
         });
       }
 
-      for (let [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-      }
       const res = await updateProduct({ userId: user?._id as string, productId: _id as string, formData })
       responseToast(res, navigate, "/admin/product")
     } catch (error) {
@@ -87,6 +89,7 @@ const Productmanagement = () => {
       setPriceUpdate(data.product.price)
       setStockUpdate(data.product.stock)
       setCategoryUpdate(data.product.category)
+      setDescriptionUpdate(data.product.description)
     }
 
     return () => {
@@ -135,6 +138,15 @@ const Productmanagement = () => {
                     />
                   </div>
                   <div>
+                    <label>Description</label>
+                    <textarea
+                      required
+                      placeholder="Description"
+                      value={descriptionUpdate}
+                      onChange={(e) => setDescriptionUpdate(e.target.value)}
+                    />
+                  </div>
+                  <div>
                     <label>Price</label>
                     <input
                       type="number"
@@ -172,9 +184,13 @@ const Productmanagement = () => {
                   }
                   {
                     photosFiles.preview &&
-                    photosFiles.preview.map((img: string, index: number) => (
-                      <img key={index} src={img} alt="preview" />
-                    ))
+                    <div style={{ display: "flex", gap: "1rem", overflowX: "auto" }}>
+                      {
+                        photosFiles.preview.map((img: string, index: number) => (
+                          <img style={{height:60,width:60,objectFit:"cover"}} key={index} src={img} alt="preview" />
+                        ))
+                      }
+                    </div>
                   }
                   <button disabled={btnLoading} type="submit">Update</button>
                 </form>

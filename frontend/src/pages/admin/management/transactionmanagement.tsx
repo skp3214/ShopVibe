@@ -1,13 +1,12 @@
 import { FaTrash } from "react-icons/fa";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import AdminSidebar from "../../../components/admin/AdminSidebar";
-import { server } from "../../../redux/store";
 import { OrderItem } from "../../../types/types";
 import { useSelector } from "react-redux";
 import { UserReducerIntialState } from "../../../types/reducer.types";
 import { useDeleteOrderMutation, useOrderDetailsQuery, useUpdateOrderMutation } from "../../../redux/api/OrderAPI";
 import { SkeletonLoader } from "../../../components/loader";
-import { responseToast } from "../../../utils/features";
+import { responseToast, transformImage } from "../../../utils/features";
 
 const defaultData = {
   shippingInfo: {
@@ -66,7 +65,7 @@ const TransactionManagement = () => {
                 <ProductCard
                   key={i._id}
                   name={i.name}
-                  photo={`${server}/${i.photo}`}
+                  photo={transformImage(i.photo, 150)}
                   productID={i.productID}
                   _id={i._id}
                   quantity={i.quantity}

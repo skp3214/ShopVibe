@@ -1,17 +1,16 @@
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaExternalLinkAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import { CartItem } from "../types/types";
-
-type ProductsProps = {
+import { transformImage } from "../utils/features";
+interface ProductsProps {
   productId: string;
-  photos: {
-    public_id: string;
-    url: string;
-  }[];
+  photos: { url: string }[];
   name: string;
   price: number;
   stock: number;
-  handler: (cartItem: CartItem) => string | undefined,
+  handler: (cartItem: CartItem) => string | undefined;
 }
+
 const ProductCard = ({
   productId,
   photos,
@@ -22,18 +21,23 @@ const ProductCard = ({
 }: ProductsProps) => {
   return (
     <div className="product-card">
-      <img src={photos[0].url} alt={name} />
+      {photos && photos[0] ? (
+        <img src={transformImage(photos[0]?.url,700)} alt={name} />
+      ) : (
+        <span>No Image</span>
+      )}
       <p>{name}</p>
       <span>₹{price}</span>
       <div>
         <button onClick={() => handler({
           productID: productId,
-          photo:photos[0].url,
+          photo: photos && photos[0] ? photos[0].url : "",
           name,
           price,
           stock,
           quantity: 1,
         })}><FaPlus /></button>
+        <Link to={`/product/${productId}`}> <FaExternalLinkAlt/> </Link>  
       </div>
     </div>
   )

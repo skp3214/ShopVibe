@@ -7,9 +7,11 @@ import { SkeletonLoader } from "../components/loader";
 import { CartItem } from "../types/types";
 import { addToCart } from "../redux/reducer/CartReducer";
 import { useDispatch } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 
 const Search = () => {
   const { data: categoriesResponse, isLoading: loadingCategories, isError, error } = useCategoriesQuery("");
+  
   useEffect(() => {
     if (isError) {
       toast.error((error as CustomError)?.data?.message || "An error occurred");
@@ -21,6 +23,13 @@ const Search = () => {
   const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
+
+  const [searchParams]=useSearchParams();
+
+  useEffect(()=>{
+    setCategory(searchParams.get("category") || "");
+  },[searchParams])
+
   const { isLoading: productLoading, data: searchedData,
     isError: productIsError, error: productError
   } = useSearchedProductsQuery({ search, sort, price: Number(maxPrice), category, page });

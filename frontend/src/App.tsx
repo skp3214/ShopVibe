@@ -40,6 +40,7 @@ const ProductManagement = lazy(
 const TransactionManagement = lazy(
   () => import("./pages/admin/management/transactionmanagement")
 );
+const Footer = lazy(() => import("./components/footer"))
 
 const App = () => {
   const { user, loading } = useSelector((state: { userReducer: UserReducerIntialState }) => state.userReducer)
@@ -112,6 +113,7 @@ const App = () => {
 
             <Route path="*" element={<NotFound />} />
           </Routes>
+        <Footer />
         </Suspense>
         <Toaster position="bottom-center" />
       </Router>

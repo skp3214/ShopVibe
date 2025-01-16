@@ -12,7 +12,7 @@ import {
     useUpdateCouponMutation,
     useDeleteCouponMutation,
 } from "../../../redux/api/PaymentAPI";
-import { responseToast, responseToastDiscount } from "../../../utils/features";
+import { responseToastDiscount } from "../../../utils/features";
 
 const DiscountManagement = () => {
     const { user } = useSelector((state: RootState) => state.userReducer);

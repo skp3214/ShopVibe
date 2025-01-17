@@ -19,7 +19,6 @@ https://github.com/user-attachments/assets/5f6d020f-cf13-41df-8192-c40b2f93990b
 - 🔒 **Authentication:** Secure login and registration using Firebase.
 - 🔍 **Product Search & Filter:** Intuitive product search and filtering.
 - 🛒 **Cart Management:** Add, remove, and update items in the shopping cart.
-- 📦 **Order Management:** View and manage orders with detailed order information (`pending`).
 - 💳 **Checkout & Payment:** Secure payments via Stripe integration.
 
 ### Admin Features:
@@ -29,33 +28,6 @@ https://github.com/user-attachments/assets/5f6d020f-cf13-41df-8192-c40b2f93990b
 - 💰 **Transaction Management:** Monitor and manage transactions.
 - 📈 **Data Visualization:** Interactive charts (Bar, Pie, Line) for insights.
 - 🛠️ **Admin Tools:** Applications like Coupon Management and Stopwatch.
-
----
-
-## Tech Stack
-
-### Frontend:
-- ⚛️ **Framework:** React with TypeScript.
-- 🌐 **Routing:** React Router DOM.
-- 🗂️ **State Management:** Redux Toolkit.
-- 🎨 **Styling:** SCSS for custom styles.
-- 🛠️ **UI Libraries:**
-  - React Icons
-  - React Chart.js 2
-- 🔧 **Additional Tools:** Axios, React Hot Toast, Moment.js.
-
-### Backend:
-- 🖥️ **Framework:** Express.js with TypeScript.
-- 🗄️ **Database:** MongoDB.
-- 🗃️ **Caching:** Node-Cache for in-memory caching.
-- 💳 **Payment Integration:** Stripe.
-- 🛠️ **Other Tools:**
-  - Multer for file handling.
-  - Morgan for logging.
-
-### DevOps & Utilities:
-- 🌎 **Environment Management:** dotenv.
-- 🛠️ **Build Tools:** TypeScript Compiler, Vite.
 
 ---
 
@@ -134,7 +106,7 @@ https://github.com/user-attachments/assets/5f6d020f-cf13-41df-8192-c40b2f93990b
 
 ---
 
-## Key Libraries
+## Tech Stack
 
 ### Frontend:
 - 🔔 `react-hot-toast`: Notifications.
@@ -146,7 +118,6 @@ https://github.com/user-attachments/assets/5f6d020f-cf13-41df-8192-c40b2f93990b
 - 🗄️ `mongoose`: MongoDB ODM.
 - 🗃️ `node-cache`: Caching.
 - 💳 `stripe`: Payment gateway.
-- 🖼️ `cloudinary`: Image storage.
 - 📂 `multer`: File handling.
 
 ---

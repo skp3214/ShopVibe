@@ -1,9 +1,10 @@
 import mongoose, { Document } from "mongoose";
-import { myCache } from "../app.js";
+import { redis } from "../app.js";
 import { Product } from "../models/product.js";
 import { InvalidatesCacheType, OrderItemType } from "../types/types.js";
 import { v2 as cloudinary, UploadApiResponse } from 'cloudinary';
 import { Review } from "../models/review.js";
+import { Redis } from "ioredis";
 export const connectDB = (uri: string) => {
     mongoose.connect(uri, {
         dbName: "ShopVibeUpgrade",
@@ -14,10 +15,22 @@ export const connectDB = (uri: string) => {
     })
 }
 
+export const connectRedis = (url: string) => {
+    const redis = new Redis(url);
+    redis.on("connect", () => {
+        console.log("Redis connected");
+    });
+    redis.on("error", (err) => {
+        console.log(err);
+    });
+    return redis;
+}
+
 export const invalidatesCache = async ({
     product,
     order,
     admin,
+    review,
     userId,
     orderId,
     productId,
@@ -36,7 +49,7 @@ export const invalidatesCache = async ({
                 productKeys.push(`product-${id}`);
             });
         }
-        myCache.del(productKeys);
+        await redis.del(productKeys);
     }
     if (order) {
         const orderKeys: string[] = [
@@ -45,7 +58,7 @@ export const invalidatesCache = async ({
             `order-${orderId}`,
         ];
 
-        myCache.del(orderKeys);
+        await redis.del(orderKeys);
     }
     if (admin) {
         const adminKeys = [
@@ -54,7 +67,15 @@ export const invalidatesCache = async ({
             "barCharts",
             "lineCharts",
         ];
-        myCache.del(adminKeys);
+        await redis.del(adminKeys);
+    }
+
+    if (review) {
+        const reviewKeys = [
+            `product-${productId}`,
+            `${productId}-reviews`,
+        ];
+        await redis.del(reviewKeys);
     }
 
 }
@@ -171,5 +192,5 @@ export const setProductRating = async (productId: mongoose.Types.ObjectId) => {
     else {
         averageRating = 0;
     }
-    return {averageRating:Math.floor(averageRating), reviewsCount: reviews.length};
+    return { averageRating: Math.floor(averageRating), reviewsCount: reviews.length };
 }

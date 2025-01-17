@@ -4,9 +4,8 @@ import productRoutes from './routes/product.routes.js';
 import orderRoutes from './routes/order.routes.js';
 import paymentRoutes from './routes/payment.routes.js';
 import dashboardRoutes from './routes/stats.routes.js';
-import { connectDB } from './utils/features.js';
+import { connectDB, connectRedis } from './utils/features.js';
 import { errorMiddleWare } from './middleware/error.js';
-import NodeCache from 'node-cache';
 import {config} from 'dotenv';
 import morgan from 'morgan';
 import Stripe from 'stripe';
@@ -21,13 +20,13 @@ config(
 const MONGO_URI=process.env.MONGO_URI||"";
 const StripeKey=process.env.STRIPE_KEY||"";
 connectDB(MONGO_URI as string);
+export const redis=connectRedis(process.env.REDIS_URL as string);
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET
 })
 export const stripe=new Stripe(StripeKey)
-export const myCache = new NodeCache();
 
 const app = express();
 app.use(express.json());

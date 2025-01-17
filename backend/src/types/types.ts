@@ -49,6 +49,7 @@ export type InvalidatesCacheType = {
     userId?:string;
     orderId?:string;
     productId?:string|string[];
+    review?:boolean;
 };
 
 export type OrderItemType={

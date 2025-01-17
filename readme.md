@@ -30,33 +30,6 @@ https://github.com/user-attachments/assets/5f6d020f-cf13-41df-8192-c40b2f93990b
 
 ---
 
-## Tech Stack
-
-### Frontend:
-- ⚛️ **Framework:** React with TypeScript.
-- 🌐 **Routing:** React Router DOM.
-- 🗂️ **State Management:** Redux Toolkit.
-- 🎨 **Styling:** SCSS for custom styles.
-- 🛠️ **UI Libraries:**
-  - React Icons
-  - React Chart.js 2
-- 🔧 **Additional Tools:** Axios, React Hot Toast, Moment.js.
-
-### Backend:
-- 🖥️ **Framework:** Express.js with TypeScript.
-- 🗄️ **Database:** MongoDB.
-- 🗃️ **Caching:** Node-Cache for in-memory caching.
-- 💳 **Payment Integration:** Stripe.
-- 🛠️ **Other Tools:**
-  - Multer for file handling.
-  - Morgan for logging.
-
-### DevOps & Utilities:
-- 🌎 **Environment Management:** dotenv.
-- 🛠️ **Build Tools:** TypeScript Compiler, Vite.
-
----
-
 ## Screenshots
 ![image](https://github.com/user-attachments/assets/a677af9e-deb4-4f21-bce8-c3e624f7424c)
 ![image](https://github.com/user-attachments/assets/b4380a64-97e6-47ea-9cdd-f13139870459)
@@ -132,7 +105,7 @@ https://github.com/user-attachments/assets/5f6d020f-cf13-41df-8192-c40b2f93990b
 
 ---
 
-## Key Libraries
+## Tech Stack
 
 ### Frontend:
 - 🔔 `react-hot-toast`: Notifications.

@@ -1,4 +1,4 @@
-# ShopVibe
+# ShopVibe Upgrade
 
 Welcome to **ShopVibe**, a full-featured e-commerce platform built using the MERN stack and TypeScript for both the frontend and backend. This application ensures a seamless shopping experience with features like user authentication, cart management, product browsing, and an admin dashboard for managing products, orders, and transactions.
 
@@ -9,7 +9,7 @@ https://github.com/user-attachments/assets/5f6d020f-cf13-41df-8192-c40b2f93990b
 ---
 
 ## Website Link
-[https://shopvibe-live.vercel.app/](https://shopvibe-live.vercel.app/)
+[https://shopvibeupgrade.netlify.app/](https://shopvibeupgrade.netlify.app/)
 
 ## Features
 
@@ -80,7 +80,7 @@ https://github.com/user-attachments/assets/5f6d020f-cf13-41df-8192-c40b2f93990b
    ```bash
    npm install
    ```
-4. 🛠️ Create a `.env` file with the following:
+4. 🛠️ Create a `.env` file with the following(or copy from .env.sample):
    ```env
    MONGO_URI=your_mongo_connection_string
    STRIPE_KEY=your_stripe_api_key
@@ -88,7 +88,7 @@ https://github.com/user-attachments/assets/5f6d020f-cf13-41df-8192-c40b2f93990b
    ```
 5. 🚀 Start the server:
    ```bash
-   npm run watch && npm start
+   npm run dev
    ```
 
 ### Frontend Setup:
@@ -97,7 +97,7 @@ https://github.com/user-attachments/assets/5f6d020f-cf13-41df-8192-c40b2f93990b
    ```bash
    npm install
    ```
-3.🛠️ Create a `.env` file with the following:
+3.🛠️ Create a `.env` file with the following(or copy from .env.sample):
    ```env
    VITE_FIREBASE_API_KEY=
    VITE_FIREBASE_AUTH_DOMAIN=
@@ -152,7 +152,7 @@ https://github.com/user-attachments/assets/5f6d020f-cf13-41df-8192-c40b2f93990b
 ## Deployment
 
 - 🌍 The backend is deployed on render.
-- 🌐 The frontend is deployed on vercel.
+- 🌐 The frontend is deployed on netlify.
 
 ---
 

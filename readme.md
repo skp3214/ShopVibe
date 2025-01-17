@@ -1,143 +1,133 @@
-# ShopVibe Upgrade
 
-Welcome to **ShopVibe**, a full-featured e-commerce platform built using the MERN stack and TypeScript for both the frontend and backend. This application ensures a seamless shopping experience with features like user authentication, cart management, product browsing, and an admin dashboard for managing products, orders, and transactions.
+# **ShopVibe Upgrade**  
+Welcome to the **upgraded version of ShopVibe**, a full-featured e-commerce platform built using the **MERN stack** and **TypeScript**. The platform now includes additional features for **cloud-based image management**, **interactive animations**, and **advanced discount management**. These upgrades ensure a more seamless, engaging, and powerful shopping experience for both users and administrators.   
 
+---  
 
-https://github.com/user-attachments/assets/5f6d020f-cf13-41df-8192-c40b2f93990b
+## 🌐 **Website Link**  
+[Visit ShopVibe Upgraded Version](https://shopvibeupgrade.netlify.app/)  
 
+---  
 
----
+## 🚀 **New Features in This Upgrade**  
+- 🖼️ **Cloudinary Integration**: Efficient and scalable image storage and delivery.  
+- 💫 **Framer Motion Animations**: Smooth, interactive UI animations for a better user experience.  
+- 💰 **Discount Management**: Create and manage discounts to enhance sales.  
+- 📄 **Order Details Page**: Improved order management for users with detailed insights.  
+- 🌟 **Review Model**: Allows users to leave and view reviews for products, boosting engagement and trust.  
 
-## Website Link
-[https://shopvibeupgrade.netlify.app/](https://shopvibeupgrade.netlify.app/)
+---  
 
-## Features
+## 🛠️ **Existing Features**  
 
-### User Features:
-- 🔒 **Authentication:** Secure login and registration using Firebase.
-- 🔍 **Product Search & Filter:** Intuitive product search and filtering.
-- 🛒 **Cart Management:** Add, remove, and update items in the shopping cart.
-- 📦 **Order Management:** View and manage orders with detailed order information (`pending`).
-- 💳 **Checkout & Payment:** Secure payments via Stripe integration.
+### **User Features**  
+- 🔒 **Authentication**: Secure login and registration using Firebase.  
+- 🔍 **Product Search & Filter**: Easily explore products using advanced search and filters.  
+- 🛒 **Cart Management**: Add, update, and remove items from the cart.  
+- 📦 **Order Management**: Track and view orders with detailed information.  
+- 💳 **Secure Checkout**: Integrated with Stripe for smooth and reliable payments.  
 
-### Admin Features:
-- 📊 **Dashboard:** Comprehensive stats and analytics.
-- 🛠️ **Product Management:** Add, edit, and delete products.
-- 📋 **Order Management:** View and manage customer orders.
-- 💰 **Transaction Management:** Monitor and manage transactions.
-- 📈 **Data Visualization:** Interactive charts (Bar, Pie, Line) for insights.
-- 🛠️ **Admin Tools:** Applications like Coupon Management and Stopwatch.
+### **Admin Features**  
+- 📊 **Admin Dashboard**: Comprehensive analytics and stats with interactive charts.  
+- 🛠️ **Product Management**: Add, edit, and delete products with ease.  
+- 💰 **Discount Management**: Tools for creating promotional offers and discounts.  
+- 📋 **Order Management**: Manage customer orders efficiently.  
+- 📈 **Data Visualization**: Bar, pie, and line charts for insights into sales and performance.  
 
----
+---  
 
-## Screenshots
-![image](https://github.com/user-attachments/assets/a677af9e-deb4-4f21-bce8-c3e624f7424c)
-![image](https://github.com/user-attachments/assets/b4380a64-97e6-47ea-9cdd-f13139870459)
-![image](https://github.com/user-attachments/assets/f712478e-90c8-408a-8739-a90402f5b4ac)
-![image](https://github.com/user-attachments/assets/2babdb72-6e81-4dbb-82de-87bff843a26f)
-![image](https://github.com/user-attachments/assets/a1169aaa-ee9b-48bc-8e61-c2df2e9a7ed0)
-![image](https://github.com/user-attachments/assets/cb0443f9-fb4e-46be-93d1-8e84e80e8c84)
+## 🖥️ **Tech Stack**  
 
+### **Frontend**  
+- ⚛️ React, Redux Toolkit, TypeScript  
+- 🎨 SCSS, Framer Motion, React Icons  
+- 📊 React ChartJS for data visualization  
+- 🔔 React Hot Toast for notifications  
 
-## Installation & Setup
+### **Backend**  
+- 🗄️ Express.js, MongoDB, TypeScript  
+- 💳 Stripe for payment gateway integration  
+- 🖼️ Cloudinary for image management  
+- 🗃️ Node-Cache for caching  
+- 🛠️ Mongoose for MongoDB interactions  
 
-### Prerequisites:
-- 📥 Node.js
-- 📥 MongoDB
-- 📥 Stripe account
+---  
 
-### Backend Setup:
-1. 📂 Clone the repository.
-2. 📁 Navigate to the `backend` directory.
-3. 📦 Install dependencies:
-   ```bash
-   npm install
-   ```
-4. 🛠️ Create a `.env` file with the following(or copy from .env.sample):
-   ```env
-   MONGO_URI=your_mongo_connection_string
-   STRIPE_KEY=your_stripe_api_key
-   PORT=your_port
-   ```
-5. 🚀 Start the server:
-   ```bash
-   npm run dev
-   ```
+## 📂 **Folder Structure**  
 
-### Frontend Setup:
-1. 📁 Navigate to the `frontend` directory.
-2. 📦 Install dependencies:
-   ```bash
-   npm install
-   ```
-3.🛠️ Create a `.env` file with the following(or copy from .env.sample):
-   ```env
-   VITE_FIREBASE_API_KEY=
-   VITE_FIREBASE_AUTH_DOMAIN=
-   VITE_FIREBASE_PROJECT_ID=
-   VITE_FIREBASE_STORAGE_BUCKET=
-   VITE_FIREBASE_MESSAGING_SENDER_ID=
-   VITE_FIREBASE_APP_ID=
+### **Backend**  
+- 📁 `routes/`: Routes for users, products, orders, reviews, and discounts  
+- 🛠️ `middleware/`: Middleware for error handling and authentication  
+- 📂 `models/`: MongoDB models for products, orders, users, reviews, and discounts  
+- 📂 `utils/`: Utility functions like database connection  
 
-   VITE_SERVER_URL=
-   VITE_STRIPE_KEY=
-   ```
-4. 🚀 Start the development server:
-   ```bash
-   npm run dev
-   ```
+### **Frontend**  
+- 📁 `pages/`: User and admin pages for different functionalities  
+- 🗂️ `redux/`: Redux slices and API integrations  
+- 🛠️ `components/`: Reusable UI components  
+- 🔑 `firebase/`: Firebase configuration  
 
----
+---  
 
-## Folder Structure
+## 🚀 **Setup & Installation**  
 
-### Backend:
-- 📁 **`routes/`**: API routes for users, products, orders, payments, and dashboard.
-- 🛠️ **`middleware/`**: Error handling middleware.
-- 📂 **`utils/`**: Utility functions like database connection.
-- 📂 **`uploads/`**: Static file storage.
+### **Backend Setup**  
+1. Clone the repository and navigate to the `backend` directory.  
+2. Install dependencies:  
+   ```bash  
+   npm install  
+   ```  
+3. Set up environment variables in `.env`:  
+   ```env  
+   MONGO_URI=your_mongo_connection_string  
+   STRIPE_KEY=your_stripe_api_key  
+   CLOUDINARY_NAME=your_cloudinary_name  
+   CLOUDINARY_API_KEY=your_cloudinary_api_key  
+   CLOUDINARY_API_SECRET=your_cloudinary_api_secret  
+   PORT=your_port  
+   ```  
+4. Start the server:  
+   ```bash  
+   npm run dev  
+   ```  
 
-### Frontend:
-- 📁 **`pages/`**: React components for user and admin pages.
-- 🗂️ **`redux/`**: Redux Toolkit slices and API integrations.
-- 🛠️ **`components/`**: Reusable UI components.
-- 🔑 **`firebase/`**: Firebase configuration.
+### **Frontend Setup**  
+1. Navigate to the `frontend` directory.  
+2. Install dependencies:  
+   ```bash  
+   npm install  
+   ```  
+3. Set up environment variables in `.env`:  
+   ```env  
+   VITE_FIREBASE_API_KEY=your_firebase_api_key  
+   VITE_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain  
+   VITE_FIREBASE_PROJECT_ID=your_firebase_project_id  
+   VITE_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket  
+   VITE_FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id  
+   VITE_FIREBASE_APP_ID=your_firebase_app_id  
+   VITE_SERVER_URL=your_backend_url  
+   VITE_STRIPE_KEY=your_stripe_key  
+   ```  
+4. Start the development server:  
+   ```bash  
+   npm run dev  
+   ```  
 
----
+---  
 
-## Tech Stack
+## 📷 **Screenshots**  
+  
 
-### Frontend:
-- 🔔 `react-hot-toast`: Notifications.
-- 📊 `react-chartjs-2`: Data visualization.
-- 🔑 `firebase`: Authentication.
-- 🌐 `axios`: API calls.
+---  
 
-### Backend:
-- 🗄️ `mongoose`: MongoDB ODM.
-- 🗃️ `node-cache`: Caching.
-- 💳 `stripe`: Payment gateway.
-- 🖼️ `cloudinary`: Image storage.
-- 📂 `multer`: File handling.
+## 🤝 **Contributions**  
+Contributions are welcome! Fork the repository and submit a pull request for review.  
 
----
+---  
 
-## Deployment
+## 📩 **Contact**  
+For queries or collaboration, feel free to reach out:  
+- 📧 **Email**: skprajapati3214@gmail.com  
+- 🔗 [**LinkedIn**](https://www.linkedin.com/in/skp3214/)  
 
-- 🌍 The backend is deployed on render.
-- 🌐 The frontend is deployed on netlify.
-
----
-
-## Contributions
-
-Contributions are welcome! Please fork the repository and submit a pull request for review.
-
----
-
-### Contact
-
-For any inquiries or support, please reach out to:
-- 📧 **Email:** skprajapati3214@gmail.com
-- 🔗 **LinkedIn:** [skp3214](https://www.linkedin.com/in/skp3214/)
-
+---  

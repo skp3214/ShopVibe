@@ -9,7 +9,9 @@ https://github.com/user-attachments/assets/5f6d020f-cf13-41df-8192-c40b2f93990b
 ---
 
 ## Website Link
-[https://shopvibe-live.vercel.app/](https://shopvibe-live.vercel.app/)
+#### First Version: [https://shopvibe-live.vercel.app/](https://shopvibe-live.vercel.app/)
+
+#### Upgraded Version: [https://shopvibeupgrade.netlify.app/](https://shopvibeupgrade.netlify.app/)
 
 ## Features
 

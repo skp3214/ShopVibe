@@ -1,8 +1,11 @@
-
 # **ShopVibe Upgrade**  
 Welcome to the **upgraded version of ShopVibe**, a full-featured e-commerce platform built using the **MERN stack** and **TypeScript**. The platform now includes additional features for **cloud-based image management**, **interactive animations**, and **advanced discount management**. These upgrades ensure a more seamless, engaging, and powerful shopping experience for both users and administrators.   
 
 ---  
+
+
+https://github.com/user-attachments/assets/e823c435-bb4e-4a69-a01a-0e83fff06394
+
 
 ## 🌐 **Website Link**  
 [Visit ShopVibe Upgraded Version](https://shopvibeupgrade.netlify.app/)  
@@ -116,9 +119,11 @@ Welcome to the **upgraded version of ShopVibe**, a full-featured e-commerce plat
 ---  
 
 ## 📷 **Screenshots**  
-  
+![Screenshot_17-1-2025_181244_shopvibeupgrade netlify app](https://github.com/user-attachments/assets/7fbbc551-3aea-4f40-9b7a-703d3645531b)
+![Screenshot_17-1-2025_181315_shopvibeupgrade netlify app](https://github.com/user-attachments/assets/5a48b248-0178-433d-8907-27c726c5c34a)
+![Screenshot_17-1-2025_181437_shopvibeupgrade netlify app](https://github.com/user-attachments/assets/1755c224-b903-404d-9a1a-4a2dcc127a17)
+![Screenshot_17-1-2025_181543_shopvibeupgrade netlify app](https://github.com/user-attachments/assets/7c23618a-62f6-4516-be10-48cae4166337)
 
----  
 
 ## 🤝 **Contributions**  
 Contributions are welcome! Fork the repository and submit a pull request for review.  

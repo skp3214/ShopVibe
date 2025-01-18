@@ -1,0 +1,63 @@
+version: '3.8'
+services:
+  web:
+    depends_on:
+      - api
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    container_name: shopvibe-web
+    env_file:
+      - ./frontend/.env
+    develop:
+      watch:
+        - path: ./frontend/package*.json
+          action: rebuild
+        - path: ./frontend
+          target: /app
+          action: sync
+
+  api: 
+    depends_on:
+      - mongodb
+      - redis
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: shopvibe-api
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./backend/.env
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://mongodb
+      - REDIS_URL=redis://redis
+    develop:
+      watch:
+        - path: ./backend/package*.json
+          action: rebuild
+        - path: ./backend
+          target: /app
+          action: sync
+  
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  redis:
+    image: redis/redis-stack
+    container_name: redis
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    
+volumes:
+  mongodb_data:
+    driver: local

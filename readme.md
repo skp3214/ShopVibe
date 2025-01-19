@@ -1,32 +1,30 @@
-# **ShopVibe Upgrade**  
-Welcome to the **upgraded version of ShopVibe**, a full-featured e-commerce platform built using the **MERN stack** and **TypeScript**. The platform now includes additional features for **cloud-based image management**, **interactive animations**, and **advanced discount management**. These upgrades ensure a more seamless, engaging, and powerful shopping experience for both users and administrators.   
+# **ShopVibe Ultimate**  
+
+Welcome to the **ultimate version of ShopVibe**, a full-featured e-commerce platform built using the **MERN stack** and **TypeScript**. The platform now boasts new features, including **Docker integration**, **Redis for caching**, and **advanced user functionalities**, enhancing both performance and user engagement.  
 
 ---  
 
-
 https://github.com/user-attachments/assets/e823c435-bb4e-4a69-a01a-0e83fff06394
-
 
 ## 🌐 **Website Link**  
 [Visit ShopVibe Upgraded Version](https://shopvibeupgrade.netlify.app/)  
 
 ---  
 
-## 🚀 **New Features in This Upgrade**  
-- 🖼️ **Cloudinary Integration**: Efficient and scalable image storage and delivery.  
-- 💫 **Framer Motion Animations**: Smooth, interactive UI animations for a better user experience.  
-- 💰 **Discount Management**: Create and manage discounts to enhance sales.  
-- 📄 **Order Details Page**: Improved order management for users with detailed insights.  
-- 🌟 **Review Model**: Allows users to leave and view reviews for products, boosting engagement and trust.  
+## 🚀 **What's New?**  
+- 🐳 **Docker Integration**: Simplified setup and deployment for developers.  
+- 🧰 **Redis Caching**: Replacing Node-Cache with Redis for improved performance and scalability.  
+ 
 
 ---  
 
-## 🛠️ **Existing Features**  
+## 🚀 **Existing Features**  
 
 ### **User Features**  
 - 🔒 **Authentication**: Secure login and registration using Firebase.  
 - 🔍 **Product Search & Filter**: Easily explore products using advanced search and filters.  
 - 🛒 **Cart Management**: Add, update, and remove items from the cart.  
+- 📄 **Product Details Page**: Enhanced product detail view with user reviews and ratings. 
 - 📦 **Order Management**: Track and view orders with detailed information.  
 - 💳 **Secure Checkout**: Integrated with Stripe for smooth and reliable payments.  
 
@@ -51,24 +49,8 @@ https://github.com/user-attachments/assets/e823c435-bb4e-4a69-a01a-0e83fff06394
 - 🗄️ Express.js, MongoDB, TypeScript  
 - 💳 Stripe for payment gateway integration  
 - 🖼️ Cloudinary for image management  
-- 🗃️ Node-Cache for caching  
+- 🧰 Redis for caching  
 - 🛠️ Mongoose for MongoDB interactions  
-
----  
-
-## 📂 **Folder Structure**  
-
-### **Backend**  
-- 📁 `routes/`: Routes for users, products, orders, reviews, and discounts  
-- 🛠️ `middleware/`: Middleware for error handling and authentication  
-- 📂 `models/`: MongoDB models for products, orders, users, reviews, and discounts  
-- 📂 `utils/`: Utility functions like database connection  
-
-### **Frontend**  
-- 📁 `pages/`: User and admin pages for different functionalities  
-- 🗂️ `redux/`: Redux slices and API integrations  
-- 🛠️ `components/`: Reusable UI components  
-- 🔑 `firebase/`: Firebase configuration  
 
 ---  
 
@@ -87,11 +69,13 @@ https://github.com/user-attachments/assets/e823c435-bb4e-4a69-a01a-0e83fff06394
    CLOUDINARY_NAME=your_cloudinary_name  
    CLOUDINARY_API_KEY=your_cloudinary_api_key  
    CLOUDINARY_API_SECRET=your_cloudinary_api_secret  
+   REDIS_HOST=your_redis_host  
+   REDIS_PORT=your_redis_port  
    PORT=your_port  
    ```  
-4. Start the server:  
+4. Start the server with Docker:  
    ```bash  
-   npm run dev  
+   docker-compose up  
    ```  
 
 ### **Frontend Setup**  
@@ -119,11 +103,12 @@ https://github.com/user-attachments/assets/e823c435-bb4e-4a69-a01a-0e83fff06394
 ---  
 
 ## 📷 **Screenshots**  
-![Screenshot_17-1-2025_181244_shopvibeupgrade netlify app](https://github.com/user-attachments/assets/7fbbc551-3aea-4f40-9b7a-703d3645531b)
-![Screenshot_17-1-2025_181315_shopvibeupgrade netlify app](https://github.com/user-attachments/assets/5a48b248-0178-433d-8907-27c726c5c34a)
-![Screenshot_17-1-2025_181437_shopvibeupgrade netlify app](https://github.com/user-attachments/assets/1755c224-b903-404d-9a1a-4a2dcc127a17)
-![Screenshot_17-1-2025_181543_shopvibeupgrade netlify app](https://github.com/user-attachments/assets/7c23618a-62f6-4516-be10-48cae4166337)
+![Screenshot_17-1-2025_181244_shopvibeupgrade netlify app](https://github.com/user-attachments/assets/7fbbc551-3aea-4f40-9b7a-703d3645531b)  
+![Screenshot_17-1-2025_181315_shopvibeupgrade netlify app](https://github.com/user-attachments/assets/5a48b248-0178-433d-8907-27c726c5c34a)  
+![Screenshot_17-1-2025_181437_shopvibeupgrade netlify app](https://github.com/user-attachments/assets/1755c224-b903-404d-9a1a-4a2dcc127a17)  
+![Screenshot_17-1-2025_181543_shopvibeupgrade netlify app](https://github.com/user-attachments/assets/7c23618a-62f6-4516-be10-48cae4166337)  
 
+---  
 
 ## 🤝 **Contributions**  
 Contributions are welcome! Fork the repository and submit a pull request for review.  
@@ -134,5 +119,3 @@ Contributions are welcome! Fork the repository and submit a pull request for rev
 For queries or collaboration, feel free to reach out:  
 - 📧 **Email**: skprajapati3214@gmail.com  
 - 🔗 [**LinkedIn**](https://www.linkedin.com/in/skp3214/)  
-
----  

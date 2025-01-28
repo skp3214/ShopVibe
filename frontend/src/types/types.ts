@@ -140,3 +140,9 @@ export type Review={
     };
     productId:string;
 }
+
+export type Cart={
+    _id:string;
+    userId:string;
+    cartItems:CartItem[];
+}

@@ -16,7 +16,6 @@ export const newProduct = TryCatch(async (
 ) => {
     const { name, category, price, stock, description } = req.body;
     const photos = req.files as Express.Multer.File[];
-    console.log(photos);
     if (!photos) {
         return next(new ErrorHandler("Please upload a photo", 400));
     }

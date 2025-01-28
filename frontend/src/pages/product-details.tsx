@@ -9,22 +9,20 @@ import {
   FaStar,
 } from "react-icons/fa6";
 import { FiEdit } from "react-icons/fi";
-import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useParams } from "react-router-dom";
 import { SkeletonLoader } from "../components/loader";
 import RatingsComponent from "../components/ratings";
 
 
 import { RootState } from "../redux/store";
-import { CartItem, Review} from "../types/types";
+import { CartItem, Review } from "../types/types";
 import { responseToast } from "../utils/features";
-import { addToCart } from "../redux/reducer/CartReducer";
 import { useCreateReviewMutation, useDeleteReviewMutation, useProductDetailsQuery, useProductReviewsQuery } from "../redux/api/ProductAPI";
+import { useAddToCartMutation } from "../redux/api/CartAPI";
+import { useSelector } from "react-redux";
 
 const ProductDetails = () => {
   const params = useParams();
-  const dispatch = useDispatch();
-
   const { user } = useSelector((state: RootState) => state.userReducer);
 
   const { isLoading, isError, data } = useProductDetailsQuery(params.id!);
@@ -39,6 +37,7 @@ const ProductDetails = () => {
   const [createReview] = useCreateReviewMutation();
   const [deleteReview] = useDeleteReviewMutation();
 
+  const [addCart] = useAddToCartMutation();
   const decrement = () => setQuantity((prev) => prev - 1);
   const increment = () => {
     if (data?.product?.stock === quantity)
@@ -46,11 +45,19 @@ const ProductDetails = () => {
     setQuantity((prev) => prev + 1);
   };
 
-  const addToCartHandler = (cartItem: CartItem) => {
+  const addToCartHandler = async (cartItem: CartItem) => {
     if (cartItem.stock < 1) return toast.error("Out of Stock");
 
-    dispatch(addToCart(cartItem));
-    toast.success("Added to cart");
+    const res = await addCart({
+      userId: user?._id as string,
+      cartItems: cartItem
+    });
+    if (res.data?.status) {
+      toast.success(res.data?.message as string);
+    }
+    else{
+      toast.error(res.error as string);
+    }
   };
 
   if (isError) return <Navigate to="/404" />;
@@ -188,10 +195,10 @@ const ProductDetails = () => {
           {reviewsResponse.isLoading
             ? null
             : user && (
-                <button onClick={showDialog}>
-                  <FiEdit />
-                </button>
-              )}
+              <button onClick={showDialog}>
+                <FiEdit />
+              </button>
+            )}
         </article>
         <div
           style={{
@@ -203,9 +210,9 @@ const ProductDetails = () => {
         >
           {reviewsResponse.isLoading ? (
             <>
-                <SkeletonLoader width="100%" />
-                <SkeletonLoader width="100%" />
-                <SkeletonLoader width="100%" />
+              <SkeletonLoader width="100%" />
+              <SkeletonLoader width="100%" />
+              <SkeletonLoader width="100%" />
             </>
           ) : (
             reviewsResponse.data?.reviews.map((review) => (

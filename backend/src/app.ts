@@ -4,6 +4,7 @@ import productRoutes from './routes/product.routes.js';
 import orderRoutes from './routes/order.routes.js';
 import paymentRoutes from './routes/payment.routes.js';
 import dashboardRoutes from './routes/stats.routes.js';
+import cartRoutes from "./routes/cart.routes.js"
 import { connectDB, connectRedis } from './utils/features.js';
 import { errorMiddleWare } from './middleware/error.js';
 import {config} from 'dotenv';
@@ -38,6 +39,7 @@ app.use("/api/v1/product", productRoutes);
 app.use("/api/v1/order", orderRoutes);
 app.use("/api/v1/payment", paymentRoutes);
 app.use("/api/v1/dashboard", dashboardRoutes);
+app.use("/api/v1/cart",cartRoutes);
 
 app.get('/', (req, res) => { 
     res.send('Welcome to shopvibe api!'); 

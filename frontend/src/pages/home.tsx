@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { SkeletonLoader } from "../components/loader";
 import ProductCard from "../components/product-card";
@@ -11,9 +11,10 @@ import { Slider } from "6pp";
 import { TbTruckDelivery } from "react-icons/tb";
 import { LuShieldCheck } from "react-icons/lu";
 import { useCategoriesQuery, useLatestProductsQuery } from "../redux/api/ProductAPI";
-import { addToCart } from "../redux/reducer/CartReducer";
 import { useEffect } from "react";
 import { CustomError } from "../types/api.types";
+import { RootState } from "../redux/store";
+import { useAddToCartMutation } from "../redux/api/CartAPI";
 
 const banners = [
   "https://res.cloudinary.com/dj5q966nb/image/upload/v1719253445/rmbjpuzctjdbtt8hewaz.png",
@@ -41,9 +42,11 @@ const services = [
 ];
 
 const Home = () => {
-  const { data, isError, isLoading } = useLatestProductsQuery("");
+  const { user } = useSelector((state: RootState) => state.userReducer);
 
-  const { data:categoryData, isLoading:isCategoryLoading, isError:isCategoryError, error:categoryError } = useCategoriesQuery("");
+  const { data, isError, isLoading } = useLatestProductsQuery("");
+  const [addCart] = useAddToCartMutation();
+  const { data: categoryData, isLoading: isCategoryLoading, isError: isCategoryError, error: categoryError } = useCategoriesQuery("");
   useEffect(() => {
     if (isCategoryError) {
       toast.error((categoryError as CustomError)?.data?.message || "An error occurred");
@@ -51,12 +54,19 @@ const Home = () => {
   }, [isCategoryError, categoryError]);
 
   const categories = categoryData?.categories || [];
-  const dispatch = useDispatch();
 
-  const addToCartHandler = (cartItem: CartItem) => {
+  const addToCartHandler = async (cartItem: CartItem) => {
     if (cartItem.stock < 1) return toast.error("Out of Stock");
-    dispatch(addToCart(cartItem));
-    toast.success("Added to cart");
+    const res = await addCart({
+      userId: user?._id as string,
+      cartItems: cartItem
+    });
+    if (res.data?.status) {
+      toast.success(res.data?.message as string);
+    }
+    else {
+      toast.error(res.error as string);
+    }
   };
 
   if (isError) toast.error("Cannot Fetch the Products");

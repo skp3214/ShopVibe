@@ -14,6 +14,7 @@ import { resetCart } from "../redux/reducer/CartReducer";
 import { RootState } from "../redux/store";
 import { NewOrderRequest } from "../types/api.types";
 import { responseToast } from "../utils/features";
+import { useDeleteCartMutation } from "../redux/api/CartAPI";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY as string);
 
@@ -38,7 +39,7 @@ const CheckOutForm = () => {
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
   const [newOrder] = useCreateOrderMutation();
-
+  const [deleteCart]=useDeleteCartMutation();
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -69,7 +70,7 @@ const CheckOutForm = () => {
 
     if (paymentIntent.status === "succeeded") {
       const res = await newOrder(orderData);
-      dispatch(resetCart());
+      deleteCart(user?._id as string);
       responseToast(res, navigate, "/orders");
     }
     setIsProcessing(false);

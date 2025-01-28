@@ -1,4 +1,4 @@
-import { Bar, CartItem, CouponType, Line, Order, Pie, Product, Review, ShippingInfo, Stats, User } from "./types";
+import { Bar, Cart, CartItem, CouponType, Line, Order, Pie, Product, Review, ShippingInfo, Stats, User } from "./types";
 
 export type MessageResponse = {
     status: boolean;
@@ -82,6 +82,11 @@ export type DiscountMessageResponse = {
 export type ProductReviewResponse = {
     status: boolean;
     reviews: Review[];
+}
+
+export type CartResponse={
+    status:boolean;
+    cart:Cart;
 }
 
 export type SearchedProductRequest = {
@@ -169,4 +174,14 @@ export type NewReviewRequest = {
 export type DeleteReviewRequest={
     reviewId:string;
     userId:string;
+}
+
+export type NewCartRequest={
+    userId:string;
+    cartItems:CartItem;
+}
+
+export type DeleteCartRequest={
+    userId:string;
+    productID:string;
 }

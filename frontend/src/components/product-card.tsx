@@ -8,7 +8,7 @@ interface ProductsProps {
   name: string;
   price: number;
   stock: number;
-  handler: (cartItem: CartItem) => string | undefined;
+  handler: (cartItem: CartItem) => Promise<string | undefined>;
 }
 
 const ProductCard = ({

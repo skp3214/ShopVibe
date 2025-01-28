@@ -22,20 +22,9 @@ export const CartReducer = createSlice({
     name: 'cartReducer',
     initialState,
     reducers: {
-        addToCart: (state, action: PayloadAction<CartItem>) => {
+        addToCart: (state, action: PayloadAction<CartItem[]>) => {
             state.loading = true;
-            const index = state.cartItems.findIndex((item) => item.productID === action.payload.productID);
-            if (index !== -1) {
-                state.cartItems[index] = action.payload;
-                state.loading = false;
-                return;
-            }
-            state.cartItems.push(action.payload);
-            state.loading = false;
-        },
-        removeFromCart: (state, action: PayloadAction<string>) => {
-            state.loading = true;
-            state.cartItems = state.cartItems.filter((item) => item.productID !== action.payload);
+            state.cartItems = action.payload;
             state.loading = false;
         },
         calculatePrice:(state)=>{
@@ -55,4 +44,4 @@ export const CartReducer = createSlice({
     }
 })
 
-export const { addToCart, removeFromCart,calculatePrice,discountApplied, saveShippingInfo,resetCart } = CartReducer.actions;
+export const { addToCart, calculatePrice,discountApplied, saveShippingInfo,resetCart } = CartReducer.actions;

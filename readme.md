@@ -103,7 +103,7 @@ https://github.com/user-attachments/assets/e823c435-bb4e-4a69-a01a-0e83fff06394
 ---  
 
 ## 📷 **Screenshots**  
-![Screenshot_17-1-2025_181244_shopvibeupgrade netlify app](https://github.com/user-attachments/assets/7fbbc551-3aea-4f40-9b7a-703d3645531b)  
+![Screenshot_4-9-2025_14627_shopvibeupgrade netlify app](https://github.com/user-attachments/assets/3c9408e4-19c6-4c46-a67c-0976862138f5)
 ![Screenshot_17-1-2025_181315_shopvibeupgrade netlify app](https://github.com/user-attachments/assets/5a48b248-0178-433d-8907-27c726c5c34a)  
 ![Screenshot_17-1-2025_181437_shopvibeupgrade netlify app](https://github.com/user-attachments/assets/1755c224-b903-404d-9a1a-4a2dcc127a17)  
 ![Screenshot_17-1-2025_181543_shopvibeupgrade netlify app](https://github.com/user-attachments/assets/7c23618a-62f6-4516-be10-48cae4166337)  
